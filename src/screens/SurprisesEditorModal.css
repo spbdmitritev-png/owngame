@@ -228,6 +228,7 @@
   border-radius: 4px;
   position: relative;
   transition: background-color 0.2s;
+  overflow: hidden;
 }
 
 .surprise-cell.has-surprise {
@@ -252,6 +253,8 @@
   max-width: 100%;
   min-height: 37px;
   justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .surprise-item:hover {
@@ -395,6 +398,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .surprise-menu {
