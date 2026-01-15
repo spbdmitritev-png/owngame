@@ -11,7 +11,7 @@ export default function FinalQuestionScreen() {
   const { gameState } = useGame()
   const [timeLeft, setTimeLeft] = useState(60)
   const [isRunning, setIsRunning] = useState(false)
-  const intervalRef = useRef<number | null>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [allAnswersSubmitted, setAllAnswersSubmitted] = useState(false)
   const [phase, setPhase] = useState<'bets' | 'question' | 'results'>('question')
 

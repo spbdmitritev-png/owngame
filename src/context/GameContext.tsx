@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from 'react'
-import { GameState, GameConfig, Team, Round, Topic, Question, SurpriseType, QuestionAnswer } from '../types'
+import { GameState, GameConfig, SurpriseType, QuestionAnswer } from '../types'
 
 const GAME_STATE_STORAGE_KEY = 'svoyaIgra_gameState'
 
