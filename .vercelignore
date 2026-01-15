@@ -1,0 +1,24 @@
+# Server files (deployed separately)
+server/
+
+# Dependencies
+node_modules/
+
+# Build artifacts (will be generated on Vercel)
+dist/
+
+# Development files
+.vite/
+*.log
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
