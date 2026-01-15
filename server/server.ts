@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import { questionsRouter } from './routes/questions'
-import { gamesRouter } from './routes/games'
+import { questionsRouter } from './routes/questions.js'
+import { gamesRouter } from './routes/games.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001

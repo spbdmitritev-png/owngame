@@ -1,4 +1,4 @@
-import { Question } from '../types'
+import { Question } from '../types.js'
 import fs from 'fs'
 import path from 'path'
 

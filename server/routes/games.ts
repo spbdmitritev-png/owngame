@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { GameConfig } from '../types'
-import { gamesDB } from '../db/gamesDB'
+import { GameConfig } from '../types.js'
+import { gamesDB } from '../db/gamesDB.js'
 
 export const gamesRouter = Router()
 

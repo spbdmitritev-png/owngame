@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { Question } from '../types'
-import { questionsDB } from '../db/questionsDB'
+import { Question } from '../types.js'
+import { questionsDB } from '../db/questionsDB.js'
 
 export const questionsRouter = Router()
 
