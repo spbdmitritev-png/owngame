@@ -1,0 +1,254 @@
+.round-end-screen {
+  min-height: 100vh;
+  padding: 40px;
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.round-end-screen:not(:has(.continue-button)) {
+  cursor: pointer;
+}
+
+.round-end-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.round-end-header h1 {
+  font-size: 4em;
+  color: #4a9eff;
+  text-shadow: 0 0 30px rgba(74, 158, 255, 0.6);
+  animation: glow 2s infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 30px rgba(74, 158, 255, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 50px rgba(74, 158, 255, 0.9);
+  }
+}
+
+.leaderboard {
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 50px;
+}
+
+.leaderboard h2 {
+  text-align: center;
+  font-size: 2.5em;
+  color: #4a9eff;
+  margin-bottom: 20px;
+}
+
+.click-hint {
+  text-align: center;
+  font-size: 1.2em;
+  color: #4a9eff;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: rgba(74, 158, 255, 0.1);
+  border: 2px dashed #4a9eff;
+  border-radius: 10px;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+.teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 25px 40px;
+  background: #16213e;
+  border: 2px solid #0f3460;
+  border-radius: 15px;
+  opacity: 0;
+  transform: translateX(-100px) scale(0.8);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+}
+
+.leaderboard-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(74, 158, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
+
+.leaderboard-item.visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.leaderboard-item.visible::before {
+  left: 100%;
+}
+
+.leaderboard-item.first {
+  background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+  border-color: #ffd700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.leaderboard-item.first.visible {
+  transform: translateX(0) scale(1.08);
+  animation: firstPlaceGlow 2s ease-in-out infinite;
+}
+
+@keyframes firstPlaceGlow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.7);
+  }
+}
+
+.leaderboard-item.second {
+  border-color: #c0c0c0;
+  box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-item.second.visible {
+  animation: secondPlaceShine 0.8s ease-out;
+}
+
+@keyframes secondPlaceShine {
+  0% {
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(192, 192, 192, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+  }
+}
+
+.leaderboard-item.third {
+  border-color: #cd7f32;
+  box-shadow: 0 0 20px rgba(205, 127, 50, 0.3);
+}
+
+.leaderboard-item.third.visible {
+  animation: thirdPlaceShine 0.8s ease-out;
+}
+
+@keyframes thirdPlaceShine {
+  0% {
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(205, 127, 50, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.3);
+  }
+}
+
+.rank {
+  font-size: 3em;
+  font-weight: bold;
+  color: #4a9eff;
+  min-width: 80px;
+  text-align: center;
+}
+
+.leaderboard-item.first .rank {
+  color: #ffd700;
+  font-size: 3.5em;
+}
+
+.leaderboard-item.second .rank {
+  color: #c0c0c0;
+}
+
+.leaderboard-item.third .rank {
+  color: #cd7f32;
+}
+
+.team-info {
+  flex: 1;
+}
+
+.team-short-name {
+  font-size: 2em;
+  font-weight: bold;
+  color: #4a9eff;
+  margin-bottom: 5px;
+}
+
+.team-name {
+  font-size: 1.2em;
+  color: #aaa;
+}
+
+.team-score {
+  font-size: 3em;
+  font-weight: bold;
+  color: #4a9eff;
+  min-width: 150px;
+  text-align: right;
+}
+
+.leaderboard-item.first .team-score {
+  color: #ffd700;
+  font-size: 3.5em;
+}
+
+.continue-button {
+  padding: 20px 50px;
+  background: linear-gradient(135deg, #4a9eff 0%, #357abd 100%);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: buttonFadeIn 0.5s ease-out;
+}
+
+@keyframes buttonFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.continue-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(74, 158, 255, 0.5);
+}
+

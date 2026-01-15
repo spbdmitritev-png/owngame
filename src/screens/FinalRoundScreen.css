@@ -1,0 +1,439 @@
+.final-round-screen {
+  min-height: 100vh;
+  padding: 48px;
+  background: linear-gradient(135deg, #F5F7FA 0%, #F9FAFB 100%);
+}
+
+.final-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.final-header h1 {
+  font-size: 4.5em;
+  color: #1E1E2A;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #1E1E2A 0%, #2563EB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.final-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topic-selection h2 {
+  text-align: center;
+  font-size: 2.5em;
+  color: #1E1E2A;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.instruction {
+  text-align: center;
+  font-size: 1.2em;
+  color: #6B7280;
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+.current-team-hint {
+  display: block;
+  font-size: 1.3em;
+  color: #2563EB;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: rgba(37, 99, 235, 0.05);
+  border: 1px solid #2563EB;
+  border-radius: 12px;
+}
+
+.current-team-hint strong {
+  color: #1E1E2A;
+  font-weight: 600;
+}
+
+.selected-topic-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 32px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.selected-topic-header h2 {
+  font-size: 2em;
+  color: #1E1E2A;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.topic-name-large {
+  font-size: 3.5em;
+  color: #2563EB;
+  font-weight: 700;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.topic-button {
+  padding: 36px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  color: #1E1E2A;
+  font-size: 1.7em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.topic-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.topic-button:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.topic-button:hover:not(:disabled) {
+  border-color: #2563EB;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2), 0 0 0 1px rgba(37, 99, 235, 0.1);
+  transform: translateY(-3px);
+  color: #2563EB;
+}
+
+.topic-button.excluded {
+  background: #F9FAFB;
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  color: #9CA3AF;
+}
+
+.topic-button:disabled {
+  cursor: not-allowed;
+}
+
+.selected-topic {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 32px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.selected-topic h2 {
+  font-size: 2em;
+  color: #1E1E2A;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+
+.bets-status {
+  margin-bottom: 40px;
+}
+
+.bets-status h2 {
+  text-align: center;
+  font-size: 2em;
+  color: #1E1E2A;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.teams-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.team-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.team-status-item.submitted {
+  border-color: #22C55E;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+.team-status-item.waiting {
+  border-color: #F59E0B;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1);
+}
+
+.team-status-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-status-short {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #2563EB;
+  min-width: 60px;
+}
+
+.team-status-name {
+  font-size: 1.1em;
+  color: #1E1E2A;
+}
+
+.team-status-indicator {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.team-status-item.submitted .team-status-indicator {
+  color: #22C55E;
+}
+
+.team-status-item.waiting .team-status-indicator {
+  color: #F59E0B;
+}
+
+.topic-name {
+  font-size: 3em;
+  color: #2563EB;
+  font-weight: 700;
+}
+
+.bets-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.bets-input h2 {
+  font-size: 2em;
+  color: #1E1E2A;
+  margin-bottom: 32px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.bets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.bet-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  gap: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bet-team-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bet-team-short {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #2563EB;
+  min-width: 80px;
+}
+
+.bet-team-name {
+  font-size: 1.2em;
+  color: #1E1E2A;
+  flex: 1;
+}
+
+.bet-team-score {
+  font-size: 1.1em;
+  color: #6B7280;
+}
+
+.bet-input {
+  width: 150px;
+  padding: 14px;
+  font-size: 1.4em;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  color: #1E1E2A;
+  text-align: center;
+  font-weight: 600;
+}
+
+.bet-input:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.accept-bets-button {
+  padding: 18px 44px;
+  background: linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 1.3em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  align-self: center;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35), 0 2px 4px rgba(37, 99, 235, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.accept-bets-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.accept-bets-button:hover::before {
+  left: 100%;
+}
+
+.accept-bets-button:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45), 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+}
+
+.start-question-button {
+  background: linear-gradient(135deg, #22C55E 0%, #16a34a 100%);
+  font-size: 1.6em;
+  padding: 24px 60px;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35), 0 2px 4px rgba(34, 197, 94, 0.2);
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-question-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.5s;
+}
+
+.start-question-button:hover::before {
+  left: 100%;
+}
+
+.start-question-button:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.45), 0 4px 8px rgba(34, 197, 94, 0.3);
+  transform: translateY(-2px);
+}
+
+.selected-topic-section {
+  margin-top: 40px;
+}
+
+.teams-bets-status {
+  margin-top: 40px;
+  padding: 32px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.teams-bets-status h3 {
+  font-size: 1.6em;
+  color: #1E1E2A;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.team-bet-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.team-bet-status-item.bet-submitted {
+  border: 1px solid #22C55E;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+.team-bet-status-name {
+  font-size: 1.2em;
+  color: #1E1E2A;
+  font-weight: 500;
+}
+
+.team-bet-status-indicator {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.team-bet-status-item.bet-submitted .team-bet-status-indicator {
+  color: #22C55E;
+}
+
+.team-bet-status-item:not(.bet-submitted) .team-bet-status-indicator {
+  color: #F59E0B;
+}
+
+.start-question-section {
+  margin-top: 32px;
+  text-align: center;
+}
