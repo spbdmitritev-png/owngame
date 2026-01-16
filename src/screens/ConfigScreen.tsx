@@ -285,7 +285,15 @@ export default function ConfigScreen() {
         // Используем сохраненные темы и вопросы
         topics = savedQuestionsRound.topics.map((topic) => ({
           ...topic,
-          questions: topic.questions.map((q) => ({ ...q, isPlayed: false }))
+          questions: topic.questions.map((q) => {
+            // Убеждаемся, что все поля вопроса сохраняются, включая медиа
+            return {
+              ...q,
+              isPlayed: false,
+              mediaUrl: q.mediaUrl, // Явно сохраняем mediaUrl
+              type: q.type || 'text', // Явно сохраняем type
+            }
+          })
         }))
       } else {
         // Иначе создаем новые
