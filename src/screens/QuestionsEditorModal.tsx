@@ -243,30 +243,53 @@ export default function QuestionsEditorModal({
   ) => {
     const round = roundNumber === 'final' ? localFinalRound : localRounds.find((r) => r.number === roundNumber)
     const question = round?.topics[topicIndex]?.questions[questionIndex]
-    if (question && category.trim()) {
-      try {
-        await questionsDB.add(category.trim(), question)
-        const key = `${roundNumber}_${topicIndex}_${questionIndex}`
-        setCategoryInputs({ ...categoryInputs, [key]: '' })
-        
-        // Обновляем категории и вопросы после сохранения
-        const categories = await questionsDB.getCategories()
-        setDbCategories(categories)
-        
-        // Обновляем список вопросов
-        let questions: QuestionDBItem[]
-        if (searchQuery) {
-          questions = await questionsDB.search(searchQuery)
-        } else if (selectedCategory) {
-          questions = await questionsDB.getByCategory(selectedCategory)
-        } else {
-          questions = await questionsDB.getAll()
-        }
-        setFilteredQuestions(questions)
-      } catch (error) {
-        console.error('Error saving question to DB:', error)
-        alert('Ошибка при сохранении вопроса в базу данных')
+    
+    // Валидация перед отправкой
+    if (!question || !category.trim()) {
+      alert('Заполните категорию и вопрос')
+      return
+    }
+
+    if (!question.text || !question.answer) {
+      alert('Заполните текст вопроса и ответ')
+      return
+    }
+
+    // Получаем price из номинала вопроса
+    const price = roundNumber === 'final' 
+      ? 0 // Для финального раунда можно использовать 0 или другое значение
+      : (currentRound?.values[questionIndex] || 100)
+
+    if (!price || price <= 0) {
+      alert('Номинал вопроса должен быть больше 0')
+      return
+    }
+
+    try {
+      await questionsDB.add(category.trim(), question, price)
+      const key = `${roundNumber}_${topicIndex}_${questionIndex}`
+      setCategoryInputs({ ...categoryInputs, [key]: '' })
+      
+      // Обновляем категории и вопросы после сохранения
+      const categories = await questionsDB.getCategories()
+      setDbCategories(categories)
+      
+      // Обновляем список вопросов
+      let questions: QuestionDBItem[]
+      if (searchQuery) {
+        questions = await questionsDB.search(searchQuery)
+      } else if (selectedCategory) {
+        questions = await questionsDB.getByCategory(selectedCategory)
+      } else {
+        questions = await questionsDB.getAll()
       }
+      setFilteredQuestions(questions)
+      
+      alert('Вопрос успешно сохранён в базу данных!')
+    } catch (error) {
+      console.error('Error saving question to DB:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка'
+      alert(`Ошибка при сохранении вопроса: ${errorMessage}`)
     }
   }
 

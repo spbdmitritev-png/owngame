@@ -47,22 +47,33 @@ questionsRouter.get('/categories', async (req, res) => {
 // Добавить вопрос
 questionsRouter.post('/', async (req, res) => {
   try {
-    const { category, question } = req.body
-    if (!category || !question) {
-      return res.status(400).json({ error: 'Category and question are required' })
+    const { category, price, question, answer, media_type, media_url } = req.body
+    
+    // Валидация обязательных полей
+    if (!category || !question || !answer || price === undefined || price === null || price <= 0) {
+      return res.status(400).json({ 
+        error: 'Category, question, answer and price (must be > 0) are required' 
+      })
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO questions (category, question)
-       VALUES ($1, $2)
+      `INSERT INTO questions (category, price, question, answer, media_type, media_url)
+       VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [category, JSON.stringify(question)]
+      [
+        category.trim(),
+        Number(price),
+        question.trim(),
+        answer.trim(),
+        media_type || null,
+        media_url || null
+      ]
     )
 
     res.status(201).json(rows[0])
   } catch (error) {
     console.error('Error adding question:', error)
-    res.status(500).json({ error: 'Failed to add question' })
+    res.status(500).json({ error: 'Failed to add question', details: error instanceof Error ? error.message : String(error) })
   }
 })
 
@@ -70,17 +81,29 @@ questionsRouter.post('/', async (req, res) => {
 questionsRouter.put('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const { category, question } = req.body
-    if (!category || !question) {
-      return res.status(400).json({ error: 'Category and question are required' })
+    const { category, price, question, answer, media_type, media_url } = req.body
+    
+    // Валидация обязательных полей
+    if (!category || !question || !answer || price === undefined || price === null || price <= 0) {
+      return res.status(400).json({ 
+        error: 'Category, question, answer and price (must be > 0) are required' 
+      })
     }
 
     const { rows } = await pool.query(
       `UPDATE questions
-       SET category = $1, question = $2, updated_at = NOW()
-       WHERE id = $3
+       SET category = $1, price = $2, question = $3, answer = $4, media_type = $5, media_url = $6, updated_at = NOW()
+       WHERE id = $7
        RETURNING *`,
-      [category, JSON.stringify(question), id]
+      [
+        category.trim(),
+        Number(price),
+        question.trim(),
+        answer.trim(),
+        media_type || null,
+        media_url || null,
+        id
+      ]
     )
 
     if (rows.length === 0) {
@@ -90,7 +113,7 @@ questionsRouter.put('/:id', async (req, res) => {
     res.json(rows[0])
   } catch (error) {
     console.error('Error updating question:', error)
-    res.status(500).json({ error: 'Failed to update question' })
+    res.status(500).json({ error: 'Failed to update question', details: error instanceof Error ? error.message : String(error) })
   }
 })
 
@@ -126,8 +149,8 @@ questionsRouter.get('/search', async (req, res) => {
     const { rows } = await pool.query(
       `SELECT * FROM questions
        WHERE LOWER(category) LIKE $1
-          OR LOWER(question->>'text') LIKE $1
-          OR LOWER(question->>'answer') LIKE $1
+          OR LOWER(question) LIKE $1
+          OR LOWER(answer) LIKE $1
        ORDER BY created_at DESC`,
       [searchTerm]
     )

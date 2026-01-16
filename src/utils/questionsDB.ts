@@ -16,10 +16,18 @@ const CACHE_TTL = 30000 // 30 секунд
 
 // Преобразуем формат из БД в формат фронтенда
 const normalizeQuestion = (item: any): QuestionDBItem => {
+  // БД возвращает: { id, category, price, question, answer, media_type, media_url, created_at }
+  // Фронтенд ожидает: { id, category, question: { text, answer, type, mediaUrl }, createdAt }
   return {
     id: item.id,
     category: item.category,
-    question: typeof item.question === 'string' ? JSON.parse(item.question) : item.question,
+    question: {
+      text: item.question || '',
+      answer: item.answer || '',
+      type: item.media_type || 'text',
+      mediaUrl: item.media_url || undefined,
+      isPlayed: false,
+    },
     created_at: item.created_at,
     createdAt: item.created_at ? new Date(item.created_at).getTime() : Date.now(),
   }
@@ -79,21 +87,41 @@ export const questionsDB = {
   },
 
   // Добавить вопрос
-  async add(category: string, question: Question): Promise<string> {
+  async add(category: string, question: Question, price?: number): Promise<string> {
     try {
+      // Валидация обязательных полей
+      if (!category || !question.text || !question.answer || !price || price <= 0) {
+        throw new Error('Category, question text, answer and price (must be > 0) are required')
+      }
+
+      const requestBody = {
+        category: category.trim(),
+        price: Number(price),
+        question: question.text.trim(),
+        answer: question.answer.trim(),
+        media_type: question.type && question.type !== 'text' ? question.type : null,
+        media_url: question.mediaUrl || null,
+      }
+
+      // Убираем null значения для чистоты
+      if (requestBody.media_type === null) {
+        delete requestBody.media_type
+      }
+      if (requestBody.media_url === null) {
+        delete requestBody.media_url
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/questions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          category: category.trim(),
-          question,
-        }),
+        body: JSON.stringify(requestBody),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to add question')
+        const errorText = await response.text()
+        throw new Error(errorText || 'Failed to add question')
       }
 
       const saved = await response.json()
@@ -130,21 +158,41 @@ export const questionsDB = {
   },
 
   // Обновить вопрос
-  async update(id: string, category: string, question: Question): Promise<void> {
+  async update(id: string, category: string, question: Question, price?: number): Promise<void> {
     try {
+      // Валидация обязательных полей
+      if (!category || !question.text || !question.answer || !price || price <= 0) {
+        throw new Error('Category, question text, answer and price (must be > 0) are required')
+      }
+
+      const requestBody = {
+        category: category.trim(),
+        price: Number(price),
+        question: question.text.trim(),
+        answer: question.answer.trim(),
+        media_type: question.type && question.type !== 'text' ? question.type : null,
+        media_url: question.mediaUrl || null,
+      }
+
+      // Убираем null значения для чистоты
+      if (requestBody.media_type === null) {
+        delete requestBody.media_type
+      }
+      if (requestBody.media_url === null) {
+        delete requestBody.media_url
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/questions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          category: category.trim(),
-          question,
-        }),
+        body: JSON.stringify(requestBody),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to update question')
+        const errorText = await response.text()
+        throw new Error(errorText || 'Failed to update question')
       }
 
       // Инвалидируем кеш
