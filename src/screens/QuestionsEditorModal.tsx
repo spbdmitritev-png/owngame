@@ -542,21 +542,6 @@ export default function QuestionsEditorModal({
                               rows={3}
                             />
                           </div>
-                          <div className="form-group">
-                            <label>Тип медиа:</label>
-                            <select
-                              value={question.type || 'text'}
-                              onChange={(e) =>
-                                handleQuestionChange(selectedRound, topicIndex, questionIndex, 'type', e.target.value as 'text' | 'image' | 'video' | 'audio')
-                              }
-                              className="question-type-select"
-                            >
-                              <option value="text">Текст</option>
-                              <option value="image">Изображение</option>
-                              <option value="video">Видео</option>
-                              <option value="audio">Аудио</option>
-                            </select>
-                          </div>
                           {(question.type === 'image' || question.type === 'video' || question.type === 'audio') && (
                             <div className="form-group">
                               <label>
