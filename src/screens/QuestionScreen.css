@@ -81,12 +81,15 @@
   box-sizing: border-box;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .answer-content.correct-answer {
   border: 3px solid #22C55E;
-  background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2), 0 0 0 1px rgba(34, 197, 94, 0.1);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15), 0 0 0 1px rgba(34, 197, 94, 0.1);
 }
 
 .answer-label {
@@ -94,6 +97,8 @@
   color: #2563EB;
   margin-bottom: 24px;
   font-weight: 600;
+  text-align: left;
+  width: 100%;
 }
 
 .answer-text {
@@ -101,10 +106,13 @@
   color: #1E1E2A;
   line-height: 1.4;
   width: 100%;
-  text-align: center;
+  text-align: left;
   word-wrap: break-word;
   font-weight: 500;
   display: block;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 /* Стили для аукциона */
