@@ -122,14 +122,16 @@ export default function QuestionsEditorModal({
           const newQuestions = topic.questions.map((question, qIdx) => {
             if (qIdx === questionIndex) {
               // Если тип изменен на text, убираем mediaUrl
-              const updatedQuestion = field === 'type' && value === 'text'
-                ? { ...question, [field]: value, mediaUrl: undefined }
-                : { ...question, [field]: value }
-              // Если тип изменен на text, но mediaUrl пустой, оставляем type как text
-              if (field === 'type' && value !== 'text' && !updatedQuestion.mediaUrl) {
-                // Оставляем текущий тип или устанавливаем text по умолчанию
+              if (field === 'type') {
+                const typeValue = value as 'text' | 'image' | 'video' | 'audio'
+                return {
+                  ...question,
+                  type: typeValue,
+                  mediaUrl: typeValue === 'text' ? undefined : question.mediaUrl,
+                }
               }
-              return updatedQuestion
+              // Для других полей
+              return { ...question, [field]: value }
             }
             return question
           })
@@ -150,10 +152,16 @@ export default function QuestionsEditorModal({
               const newQuestions = topic.questions.map((question, qIdx) => {
                 if (qIdx === questionIndex) {
                   // Если тип изменен на text, убираем mediaUrl
-                  const updatedQuestion = field === 'type' && value === 'text'
-                    ? { ...question, [field]: value, mediaUrl: undefined }
-                    : { ...question, [field]: value }
-                  return updatedQuestion
+                  if (field === 'type') {
+                    const typeValue = value as 'text' | 'image' | 'video' | 'audio'
+                    return {
+                      ...question,
+                      type: typeValue,
+                      mediaUrl: typeValue === 'text' ? undefined : question.mediaUrl,
+                    }
+                  }
+                  // Для других полей
+                  return { ...question, [field]: value }
                 }
                 return question
               })

@@ -18,13 +18,21 @@ const CACHE_TTL = 30000 // 30 секунд
 const normalizeQuestion = (item: any): QuestionDBItem => {
   // БД возвращает: { id, category, price, question, answer, media_type, media_url, created_at }
   // Фронтенд ожидает: { id, category, question: { text, answer, type, mediaUrl }, createdAt }
+  
+  // Проверяем и приводим media_type к правильному типу
+  const mediaType = item.media_type
+  let questionType: 'text' | 'image' | 'video' | 'audio' = 'text'
+  if (mediaType === 'image' || mediaType === 'video' || mediaType === 'audio') {
+    questionType = mediaType
+  }
+  
   return {
     id: item.id,
     category: item.category,
     question: {
       text: item.question || '',
       answer: item.answer || '',
-      type: item.media_type || 'text',
+      type: questionType,
       mediaUrl: item.media_url || undefined,
       isPlayed: false,
     },
