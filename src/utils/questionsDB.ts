@@ -10,7 +10,7 @@ export interface QuestionDBItem {
 }
 
 // Cache для вопросов (чтобы не делать запросы каждый раз)
-let questionsCache: QuestionDBItem[] | null = null
+let questionsCache: QuestionDBItem[] = []
 let cacheTimestamp: number = 0
 const CACHE_TTL = 30000 // 30 секунд
 
@@ -39,7 +39,7 @@ export const questionsDB = {
     try {
       // Используем кеш если он свежий
       const now = Date.now()
-      if (questionsCache && (now - cacheTimestamp) < CACHE_TTL) {
+      if (questionsCache.length > 0 && (now - cacheTimestamp) < CACHE_TTL) {
         return questionsCache
       }
 
@@ -138,7 +138,7 @@ export const questionsDB = {
       console.log('✅ Question saved successfully:', saved)
       
       // Инвалидируем кеш
-      questionsCache = null
+      questionsCache = []
       cacheTimestamp = 0
 
       return saved.id
@@ -160,7 +160,7 @@ export const questionsDB = {
       }
 
       // Инвалидируем кеш
-      questionsCache = null
+      questionsCache = []
       cacheTimestamp = 0
     } catch (error) {
       console.error('Error deleting question:', error)
@@ -176,21 +176,27 @@ export const questionsDB = {
         throw new Error('Category, question text, answer and price (must be > 0) are required')
       }
 
-      const requestBody = {
+      // Создаём requestBody без null значений
+      const requestBody: {
+        category: string
+        price: number
+        question: string
+        answer: string
+        media_type?: string
+        media_url?: string
+      } = {
         category: category.trim(),
         price: Number(price),
         question: question.text.trim(),
         answer: question.answer.trim(),
-        media_type: question.type && question.type !== 'text' ? question.type : null,
-        media_url: question.mediaUrl || null,
       }
 
-      // Убираем null значения для чистоты
-      if (requestBody.media_type === null) {
-        delete requestBody.media_type
+      // Добавляем опциональные поля только если они есть
+      if (question.type && question.type !== 'text') {
+        requestBody.media_type = question.type
       }
-      if (requestBody.media_url === null) {
-        delete requestBody.media_url
+      if (question.mediaUrl) {
+        requestBody.media_url = question.mediaUrl
       }
 
       const response = await fetch(`${API_BASE_URL}/api/questions/${id}`, {
@@ -207,7 +213,7 @@ export const questionsDB = {
       }
 
       // Инвалидируем кеш
-      questionsCache = null
+      questionsCache = []
       cacheTimestamp = 0
     } catch (error) {
       console.error('Error updating question:', error)
