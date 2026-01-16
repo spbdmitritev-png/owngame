@@ -2,9 +2,20 @@ import express from 'express'
 import cors from 'cors'
 import { questionsRouter } from './routes/questions.js'
 import { gamesRouter } from './routes/games.js'
+import { pool } from './db.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
+
+// Test database connection
+;(async () => {
+  try {
+    const res = await pool.query('SELECT now()')
+    console.log('✅ DB CONNECT OK:', res.rows[0])
+  } catch (e) {
+    console.error('❌ DB CONNECT ERROR:', e)
+  }
+})()
 
 // Middleware
 app.use(cors())
