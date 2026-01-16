@@ -51,6 +51,16 @@ export default function QuestionScreen() {
 
   const question = round.topics[topicIdx]?.questions[valueIdx]
   if (!question) return <div>Вопрос не найден</div>
+  
+  // Логирование для отладки медиа
+  useEffect(() => {
+    console.log('📺 Question media debug:', {
+      hasMediaUrl: !!question.mediaUrl,
+      mediaUrl: question.mediaUrl,
+      type: question.type,
+      questionText: question.text?.substring(0, 50),
+    })
+  }, [question.mediaUrl, question.type])
 
   const value = round.values[valueIdx]
   const surpriseType = question.surprise
