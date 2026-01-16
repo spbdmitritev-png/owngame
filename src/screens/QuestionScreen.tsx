@@ -360,10 +360,13 @@ export default function QuestionScreen() {
 
       <div className="question-content">
         <div className="question-text">{question.text}</div>
-        {question.mediaUrl && (
+        {question.mediaUrl && (question.type === 'image' || question.type === 'video' || question.type === 'audio') && (
           <div className="question-media">
             {question.type === 'image' && (
-              <img src={question.mediaUrl} alt="Question media" />
+              <img src={question.mediaUrl} alt="Question media" onError={(e) => {
+                console.error('❌ Failed to load image:', question.mediaUrl)
+                e.currentTarget.style.display = 'none'
+              }} />
             )}
             {(question.type === 'video' || question.type === 'audio') && (
               <MediaPlayer src={question.mediaUrl} type={question.type} />
