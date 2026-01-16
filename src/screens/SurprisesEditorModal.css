@@ -13,7 +13,7 @@
 }
 
 .surprises-modal-content {
-  background: #1a1a2e;
+  background: #f5f5f5;
   border-radius: 15px;
   border: 2px solid #4a9eff;
   max-width: 95vw;
@@ -32,12 +32,12 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #0f3460;
+  border-bottom: 2px solid #ddd;
 }
 
 .surprises-modal-header h2 {
   margin: 0;
-  color: #4a9eff;
+  color: #333;
   font-size: 2rem;
 }
 
@@ -71,10 +71,10 @@
 
 .round-tab {
   padding: 10px 20px;
-  background: #0f3460;
+  background: #e0e0e0;
   border: 2px solid #4a9eff;
   border-radius: 8px;
-  color: #aaa;
+  color: #666;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -82,7 +82,7 @@
 }
 
 .round-tab:hover {
-  background: #16213e;
+  background: #d0d0d0;
   color: #4a9eff;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .surprises-edit-instructions {
-  background-color: #0f3460;
+  background-color: #e8e8e8;
   padding: 15px;
   border-radius: 8px;
   display: flex;
@@ -104,7 +104,7 @@
 
 .instruction-item {
   font-size: 0.95rem;
-  color: #aaa;
+  color: #555;
 }
 
 .surprises-grid {
@@ -123,9 +123,11 @@
   flex-direction: column;
   flex: 1;
   overflow: visible;
-  padding: 0;
+  padding: 2px;
   min-height: 0;
-  gap: 3px;
+  gap: 2px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
 }
 
 .surprises-grid-content {
@@ -133,28 +135,28 @@
   flex-direction: column;
   overflow-y: auto;
   min-height: 0;
-  gap: 3px;
+  gap: 2px;
   flex: 1;
-  max-height: 65vh;
+  max-height: 70vh;
 }
 
 .grid-header {
   display: grid;
-  grid-template-columns: minmax(150px, 1fr) repeat(auto-fit, minmax(70px, 1fr));
-  gap: 3px;
-  margin-bottom: 3px;
+  grid-template-columns: minmax(120px, 1fr) repeat(auto-fit, minmax(55px, 1fr));
+  gap: 2px;
+  margin-bottom: 2px;
   flex-shrink: 0;
-  background: #1a1a2e;
+  background: #f5f5f5;
   z-index: 10;
-  padding-bottom: 3px;
+  padding-bottom: 2px;
 }
 
 .header-cell {
-  padding: 10px 6px;
+  padding: 6px 4px;
   text-align: center;
   font-weight: bold;
-  color: #4a9eff;
-  font-size: clamp(0.8em, 1.8vw, 1em);
+  color: #333;
+  font-size: clamp(0.7em, 1.5vw, 0.9em);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,20 +167,19 @@
 }
 
 .value-header {
-  background: #0f3460;
+  background: #fffacd;
   border: 2px solid #ffd700;
   border-radius: 4px;
-  font-size: clamp(1.2em, 3vw, 1.6em);
-  min-height: 35px;
+  font-size: clamp(0.9em, 2.5vw, 1.2em);
+  min-height: 28px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #ffd700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-  padding: 4px 2px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  color: #b8860b;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+  padding: 3px 2px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -186,25 +187,25 @@
 
 .grid-row {
   display: grid;
-  grid-template-columns: minmax(150px, 1fr) repeat(auto-fit, minmax(70px, 1fr));
-  gap: 3px;
+  grid-template-columns: minmax(120px, 1fr) repeat(auto-fit, minmax(55px, 1fr));
+  gap: 2px;
   flex-shrink: 0;
-  min-height: 45px;
+  min-height: 35px;
 }
 
 .topic-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #16213e;
+  background: #e8e8e8;
   border: 2px solid #4a9eff;
   border-radius: 4px;
-  font-size: clamp(0.9em, 2vw, 1.2em);
+  font-size: clamp(0.75em, 1.8vw, 1em);
   font-weight: bold;
-  color: #4a9eff;
-  padding: 4px 8px;
+  color: #333;
+  padding: 3px 6px;
   width: 100%;
-  min-height: 45px;
+  min-height: 35px;
   height: 100%;
   text-align: center;
   white-space: nowrap;
@@ -214,14 +215,14 @@
   box-sizing: border-box;
   left: 0;
   z-index: 5;
-  background-color: #16213e !important;
+  background-color: #e8e8e8 !important;
   line-height: 1.2;
 }
 
 .surprise-cell {
-  background-color: #16213e;
-  min-height: 45px;
-  padding: 4px;
+  background-color: #fafafa;
+  min-height: 35px;
+  padding: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -229,36 +230,37 @@
   position: relative;
   transition: background-color 0.2s;
   overflow: hidden;
+  border: 1px solid #e0e0e0;
 }
 
 .surprise-cell.has-surprise {
-  background-color: #1a2e3a;
+  background-color: #fff9e6;
 }
 
 .surprise-cell:hover {
-  background-color: #0f3460;
+  background-color: #e8f4fd;
 }
 
 .surprise-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
   cursor: move;
-  padding: 3px;
+  padding: 2px;
   border-radius: 4px;
   transition: all 0.2s;
   user-select: none;
   width: 100%;
   max-width: 100%;
-  min-height: 37px;
+  min-height: 28px;
   justify-content: center;
   overflow: hidden;
   position: relative;
 }
 
 .surprise-item:hover {
-  background-color: #0f3460;
+  background-color: #e0f0ff;
   transform: scale(1.05);
 }
 
@@ -267,7 +269,7 @@
 }
 
 .surprise-emoji {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   line-height: 1;
   display: block;
 }
@@ -289,20 +291,20 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 37px;
+  min-height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .add-surprise-button {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 1.5px dashed #4a9eff;
   background-color: transparent;
   color: #4a9eff;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s;
@@ -394,7 +396,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 37px;
+  min-height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
