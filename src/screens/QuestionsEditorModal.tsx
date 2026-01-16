@@ -121,11 +121,10 @@ export default function QuestionsEditorModal({
         if (tIdx === topicIndex) {
           const newQuestions = topic.questions.map((question, qIdx) => {
             if (qIdx === questionIndex) {
-              const updatedQuestion = { ...question, [field]: value }
               // Если тип изменен на text, убираем mediaUrl
-              if (field === 'type' && value === 'text') {
-                delete updatedQuestion.mediaUrl
-              }
+              const updatedQuestion = field === 'type' && value === 'text'
+                ? { ...question, [field]: value, mediaUrl: undefined }
+                : { ...question, [field]: value }
               // Если тип изменен на text, но mediaUrl пустой, оставляем type как text
               if (field === 'type' && value !== 'text' && !updatedQuestion.mediaUrl) {
                 // Оставляем текущий тип или устанавливаем text по умолчанию
@@ -150,11 +149,10 @@ export default function QuestionsEditorModal({
             if (tIdx === topicIndex) {
               const newQuestions = topic.questions.map((question, qIdx) => {
                 if (qIdx === questionIndex) {
-                  const updatedQuestion = { ...question, [field]: value }
                   // Если тип изменен на text, убираем mediaUrl
-                  if (field === 'type' && value === 'text') {
-                    delete updatedQuestion.mediaUrl
-                  }
+                  const updatedQuestion = field === 'type' && value === 'text'
+                    ? { ...question, [field]: value, mediaUrl: undefined }
+                    : { ...question, [field]: value }
                   return updatedQuestion
                 }
                 return question
