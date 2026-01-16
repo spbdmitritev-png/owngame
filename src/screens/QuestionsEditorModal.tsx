@@ -542,39 +542,64 @@ export default function QuestionsEditorModal({
                               rows={3}
                             />
                           </div>
+                          <div className="form-group">
+                            <label>Тип медиа:</label>
+                            <select
+                              value={question.type || 'text'}
+                              onChange={(e) =>
+                                handleQuestionChange(selectedRound, topicIndex, questionIndex, 'type', e.target.value as 'text' | 'image' | 'video' | 'audio')
+                              }
+                              className="question-type-select"
+                            >
+                              <option value="text">Текст</option>
+                              <option value="image">Изображение</option>
+                              <option value="video">Видео</option>
+                              <option value="audio">Аудио</option>
+                            </select>
+                          </div>
                           {(question.type === 'image' || question.type === 'video' || question.type === 'audio') && (
                             <div className="form-group">
                               <label>
-                                {question.type === 'image' && 'Загрузить изображение'}
-                                {question.type === 'video' && 'Загрузить видео'}
-                                {question.type === 'audio' && 'Загрузить аудио'}
+                                {question.type === 'image' && 'Медиа (изображение)'}
+                                {question.type === 'video' && 'Медиа (видео)'}
+                                {question.type === 'audio' && 'Медиа (аудио)'}
                                 :
                               </label>
-                              <input
-                                type="file"
-                                accept={
-                                  question.type === 'image' ? 'image/*'
-                                  : question.type === 'video' ? 'video/*'
-                                  : question.type === 'audio' ? 'audio/*'
-                                  : '*/*'
-                                }
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0] || null
-                                  const key = `${selectedRound}_${topicIndex}_${questionIndex}`
-                                  setMediaFiles({ ...mediaFiles, [key]: file })
-                                  if (file) {
-                                    // Автоматически определяем тип по файлу
-                                    const fileType = file.type.startsWith('image') ? 'image'
-                                      : file.type.startsWith('video') ? 'video'
-                                      : file.type.startsWith('audio') ? 'audio'
-                                      : 'text'
-                                    if (fileType !== question.type) {
-                                      handleQuestionChange(selectedRound, topicIndex, questionIndex, 'type', fileType)
-                                    }
+                              <div className="media-upload-container">
+                                <input
+                                  type="file"
+                                  id={`media-upload-${selectedRound}-${topicIndex}-${questionIndex}`}
+                                  accept={
+                                    question.type === 'image' ? 'image/*'
+                                    : question.type === 'video' ? 'video/*'
+                                    : question.type === 'audio' ? 'audio/*'
+                                    : '*/*'
                                   }
-                                }}
-                                className="question-media-input"
-                              />
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0] || null
+                                    const key = `${selectedRound}_${topicIndex}_${questionIndex}`
+                                    setMediaFiles({ ...mediaFiles, [key]: file })
+                                    if (file) {
+                                      // Автоматически определяем тип по файлу
+                                      const fileType = file.type.startsWith('image') ? 'image'
+                                        : file.type.startsWith('video') ? 'video'
+                                        : file.type.startsWith('audio') ? 'audio'
+                                        : 'text'
+                                      if (fileType !== question.type) {
+                                        handleQuestionChange(selectedRound, topicIndex, questionIndex, 'type', fileType)
+                                      }
+                                    }
+                                  }}
+                                  className="question-media-input"
+                                  style={{ display: 'none' }}
+                                />
+                                <label
+                                  htmlFor={`media-upload-${selectedRound}-${topicIndex}-${questionIndex}`}
+                                  className="upload-media-button"
+                                >
+                                  📁 Загрузить {question.type === 'image' ? 'изображение' : question.type === 'video' ? 'видео' : 'аудио'}
+                                </label>
+                              </div>
                               {(() => {
                                 const key = `${selectedRound}_${topicIndex}_${questionIndex}`
                                 const file = mediaFiles[key]
