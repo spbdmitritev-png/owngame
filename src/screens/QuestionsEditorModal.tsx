@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Round, Topic, Question } from '../types'
 import { questionsDB, QuestionDBItem } from '../utils/questionsDB'
+import { uploadMedia } from '../utils/uploadMedia'
 import './QuestionsEditorModal.css'
 
 interface QuestionsEditorModalProps {
@@ -30,6 +31,8 @@ export default function QuestionsEditorModal({
   const [dbCategories, setDbCategories] = useState<string[]>([])
   const [filteredQuestions, setFilteredQuestions] = useState<QuestionDBItem[]>([])
   const [loading, setLoading] = useState(false)
+  const [uploadingMedia, setUploadingMedia] = useState<Record<string, boolean>>({})
+  const [mediaFiles, setMediaFiles] = useState<Record<string, File | null>>({})
 
   useEffect(() => {
     setLocalRounds(rounds)
@@ -278,8 +281,39 @@ export default function QuestionsEditorModal({
     console.log('🚀 Sending to API:', { category: category.trim(), price, question: question.text, answer: question.answer })
 
     try {
-      const savedId = await questionsDB.add(category.trim(), question, price)
+      // Загружаем медиа, если есть файл
+      const key = `${roundNumber}_${topicIndex}_${questionIndex}`
+      let media_url = question.mediaUrl || null
+      let media_type = question.type && question.type !== 'text' ? question.type : null
+      
+      const file = mediaFiles[key]
+      if (file) {
+        setUploadingMedia({ ...uploadingMedia, [key]: true })
+        try {
+          const uploaded = await uploadMedia(file)
+          media_url = uploaded.media_url
+          media_type = uploaded.media_type as 'image' | 'video' | 'audio' | null
+          console.log('✅ Media uploaded:', { media_url, media_type })
+        } catch (uploadError) {
+          console.error('❌ Error uploading media:', uploadError)
+          alert('Ошибка при загрузке медиа-файла. Вопрос будет сохранён без медиа.')
+        } finally {
+          setUploadingMedia({ ...uploadingMedia, [key]: false })
+        }
+      }
+
+      // Создаём вопрос с медиа
+      const questionWithMedia: Question = {
+        ...question,
+        mediaUrl: media_url || undefined,
+        type: media_type || question.type || 'text',
+      }
+
+      const savedId = await questionsDB.add(category.trim(), questionWithMedia, price)
       console.log('✅ Question saved successfully:', savedId)
+      
+      // Очищаем файл после успешного сохранения
+      setMediaFiles({ ...mediaFiles, [key]: null })
       
       const key = `${roundNumber}_${topicIndex}_${questionIndex}`
       setCategoryInputs({ ...categoryInputs, [key]: '' })
@@ -511,33 +545,65 @@ export default function QuestionsEditorModal({
                           {(question.type === 'image' || question.type === 'video' || question.type === 'audio') && (
                             <div className="form-group">
                               <label>
-                                {question.type === 'image' && 'URL изображения'}
-                                {question.type === 'video' && 'URL видео'}
-                                {question.type === 'audio' && 'URL аудио'}
+                                {question.type === 'image' && 'Загрузить изображение'}
+                                {question.type === 'video' && 'Загрузить видео'}
+                                {question.type === 'audio' && 'Загрузить аудио'}
                                 :
                               </label>
                               <input
-                                type="url"
-                                value={question.mediaUrl || ''}
-                                onChange={(e) =>
-                                  handleQuestionChange(selectedRound, topicIndex, questionIndex, 'mediaUrl', e.target.value)
+                                type="file"
+                                accept={
+                                  question.type === 'image' ? 'image/*'
+                                  : question.type === 'video' ? 'video/*'
+                                  : question.type === 'audio' ? 'audio/*'
+                                  : '*/*'
                                 }
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0] || null
+                                  const key = `${selectedRound}_${topicIndex}_${questionIndex}`
+                                  setMediaFiles({ ...mediaFiles, [key]: file })
+                                  if (file) {
+                                    // Автоматически определяем тип по файлу
+                                    const fileType = file.type.startsWith('image') ? 'image'
+                                      : file.type.startsWith('video') ? 'video'
+                                      : file.type.startsWith('audio') ? 'audio'
+                                      : 'text'
+                                    if (fileType !== question.type) {
+                                      handleQuestionChange(selectedRound, topicIndex, questionIndex, 'type', fileType)
+                                    }
+                                  }
+                                }}
                                 className="question-media-input"
-                                placeholder="https://example.com/media.jpg"
                               />
-                              {question.mediaUrl && (
-                                <div className="media-preview">
-                                  {question.type === 'image' && (
-                                    <img src={question.mediaUrl} alt="Preview" className="media-preview-image" />
-                                  )}
-                                  {question.type === 'video' && (
-                                    <video src={question.mediaUrl} controls className="media-preview-video" />
-                                  )}
-                                  {question.type === 'audio' && (
-                                    <audio src={question.mediaUrl} controls className="media-preview-audio" />
-                                  )}
-                                </div>
-                              )}
+                              {(() => {
+                                const key = `${selectedRound}_${topicIndex}_${questionIndex}`
+                                const file = mediaFiles[key]
+                                const isUploading = uploadingMedia[key]
+                                return (
+                                  <>
+                                    {file && (
+                                      <div className="media-file-info">
+                                        Выбран файл: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                                        {isUploading && <span className="uploading-indicator">⏳ Загрузка...</span>}
+                                      </div>
+                                    )}
+                                    {question.mediaUrl && !file && (
+                                      <div className="media-preview">
+                                        <div className="media-url-info">Текущий URL: {question.mediaUrl}</div>
+                                        {question.type === 'image' && (
+                                          <img src={question.mediaUrl} alt="Preview" className="media-preview-image" />
+                                        )}
+                                        {question.type === 'video' && (
+                                          <video src={question.mediaUrl} controls className="media-preview-video" />
+                                        )}
+                                        {question.type === 'audio' && (
+                                          <audio src={question.mediaUrl} controls className="media-preview-audio" />
+                                        )}
+                                      </div>
+                                    )}
+                                  </>
+                                )
+                              })()}
                             </div>
                           )}
                           <div className="form-group">

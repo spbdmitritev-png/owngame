@@ -12,6 +12,7 @@
     "server:start": "node server/dist/server.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "react": "^18.2.0",
