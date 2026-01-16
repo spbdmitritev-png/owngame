@@ -27,6 +27,9 @@ export default function QuestionsEditorModal({
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [categoryInputs, setCategoryInputs] = useState<Record<string, string>>({})
+  const [dbCategories, setDbCategories] = useState<string[]>([])
+  const [filteredQuestions, setFilteredQuestions] = useState<QuestionDBItem[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setLocalRounds(rounds)
@@ -35,6 +38,43 @@ export default function QuestionsEditorModal({
   useEffect(() => {
     setLocalFinalRound(finalRound)
   }, [finalRound])
+
+  // Загружаем категории при монтировании
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categories = await questionsDB.getCategories()
+        setDbCategories(categories)
+      } catch (error) {
+        console.error('Error loading categories:', error)
+      }
+    }
+    loadCategories()
+  }, [])
+
+  // Загружаем вопросы при изменении поиска или категории
+  useEffect(() => {
+    const loadQuestions = async () => {
+      setLoading(true)
+      try {
+        let questions: QuestionDBItem[]
+        if (searchQuery) {
+          questions = await questionsDB.search(searchQuery)
+        } else if (selectedCategory) {
+          questions = await questionsDB.getByCategory(selectedCategory)
+        } else {
+          questions = await questionsDB.getAll()
+        }
+        setFilteredQuestions(questions)
+      } catch (error) {
+        console.error('Error loading questions:', error)
+        setFilteredQuestions([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadQuestions()
+  }, [searchQuery, selectedCategory])
 
   const currentRound = selectedRound === 'final' 
     ? localFinalRound 
@@ -195,7 +235,7 @@ export default function QuestionsEditorModal({
     setShowQuestionPicker(null)
   }
 
-  const handleSaveToDB = (
+  const handleSaveToDB = async (
     roundNumber: number | 'final',
     topicIndex: number,
     questionIndex: number,
@@ -204,22 +244,35 @@ export default function QuestionsEditorModal({
     const round = roundNumber === 'final' ? localFinalRound : localRounds.find((r) => r.number === roundNumber)
     const question = round?.topics[topicIndex]?.questions[questionIndex]
     if (question && category.trim()) {
-      questionsDB.add(category.trim(), question)
-      const key = `${roundNumber}_${topicIndex}_${questionIndex}`
-      setCategoryInputs({ ...categoryInputs, [key]: '' })
+      try {
+        await questionsDB.add(category.trim(), question)
+        const key = `${roundNumber}_${topicIndex}_${questionIndex}`
+        setCategoryInputs({ ...categoryInputs, [key]: '' })
+        
+        // Обновляем категории и вопросы после сохранения
+        const categories = await questionsDB.getCategories()
+        setDbCategories(categories)
+        
+        // Обновляем список вопросов
+        let questions: QuestionDBItem[]
+        if (searchQuery) {
+          questions = await questionsDB.search(searchQuery)
+        } else if (selectedCategory) {
+          questions = await questionsDB.getByCategory(selectedCategory)
+        } else {
+          questions = await questionsDB.getAll()
+        }
+        setFilteredQuestions(questions)
+      } catch (error) {
+        console.error('Error saving question to DB:', error)
+        alert('Ошибка при сохранении вопроса в базу данных')
+      }
     }
   }
 
   const getCategoryInputKey = (roundNumber: number | 'final', topicIndex: number, questionIndex: number) => {
     return `${roundNumber}_${topicIndex}_${questionIndex}`
   }
-
-  const dbCategories = questionsDB.getCategories()
-  const filteredQuestions = searchQuery
-    ? questionsDB.search(searchQuery)
-    : selectedCategory
-    ? questionsDB.getByCategory(selectedCategory)
-    : questionsDB.getAll()
 
   if (!currentRound) return null
 
@@ -502,6 +555,7 @@ export default function QuestionsEditorModal({
           setSelectedCategory={setSelectedCategory}
           categories={dbCategories}
           questions={filteredQuestions}
+          loading={loading}
         />
       )}
     </div>
@@ -517,6 +571,7 @@ function QuestionPickerModal({
   setSelectedCategory,
   categories,
   questions,
+  loading,
 }: {
   onSelect: (item: QuestionDBItem) => void
   onClose: () => void
@@ -526,6 +581,7 @@ function QuestionPickerModal({
   setSelectedCategory: (category: string) => void
   categories: string[]
   questions: QuestionDBItem[]
+  loading: boolean
 }) {
   return (
     <div className="question-picker-overlay" onClick={onClose}>
@@ -570,7 +626,9 @@ function QuestionPickerModal({
         </div>
 
         <div className="questions-db-list">
-          {questions.length === 0 ? (
+          {loading ? (
+            <div className="empty-db-message">Загрузка...</div>
+          ) : questions.length === 0 ? (
             <div className="empty-db-message">Вопросы не найдены</div>
           ) : (
             questions.map((item) => (
