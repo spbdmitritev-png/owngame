@@ -315,7 +315,7 @@ export default function QuestionsEditorModal({
       // Очищаем файл после успешного сохранения
       setMediaFiles({ ...mediaFiles, [key]: null })
       
-      const key = `${roundNumber}_${topicIndex}_${questionIndex}`
+      // Очищаем поле категории
       setCategoryInputs({ ...categoryInputs, [key]: '' })
       
       // Обновляем категории и вопросы после сохранения
