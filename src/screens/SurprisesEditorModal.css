@@ -123,11 +123,11 @@
   flex-direction: column;
   flex: 1;
   overflow: visible;
-  padding: 2px;
+  padding: 1px;
   min-height: 0;
-  gap: 2px;
+  gap: 1px;
   background-color: #e0e0e0;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .surprises-grid-content {
@@ -135,28 +135,28 @@
   flex-direction: column;
   overflow-y: auto;
   min-height: 0;
-  gap: 2px;
+  gap: 1px;
   flex: 1;
   max-height: 70vh;
 }
 
 .grid-header {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) repeat(auto-fit, minmax(55px, 1fr));
-  gap: 2px;
-  margin-bottom: 2px;
+  grid-template-columns: minmax(100px, 1fr) repeat(auto-fit, minmax(45px, 1fr));
+  gap: 1px;
+  margin-bottom: 1px;
   flex-shrink: 0;
   background: #f5f5f5;
   z-index: 10;
-  padding-bottom: 2px;
+  padding-bottom: 1px;
 }
 
 .header-cell {
-  padding: 6px 4px;
+  padding: 4px 2px;
   text-align: center;
   font-weight: bold;
   color: #333;
-  font-size: clamp(0.7em, 1.5vw, 0.9em);
+  font-size: clamp(0.65em, 1.3vw, 0.8em);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,18 +168,18 @@
 
 .value-header {
   background: #fffacd;
-  border: 2px solid #ffd700;
-  border-radius: 4px;
-  font-size: clamp(0.9em, 2.5vw, 1.2em);
-  min-height: 28px;
+  border: 1px solid #ffd700;
+  border-radius: 3px;
+  font-size: clamp(0.75em, 2vw, 1em);
+  min-height: 24px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   color: #b8860b;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
-  padding: 3px 2px;
+  box-shadow: 0 0 3px rgba(255, 215, 0, 0.2);
+  padding: 2px 1px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -187,10 +187,10 @@
 
 .grid-row {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) repeat(auto-fit, minmax(55px, 1fr));
-  gap: 2px;
+  grid-template-columns: minmax(100px, 1fr) repeat(auto-fit, minmax(45px, 1fr));
+  gap: 1px;
   flex-shrink: 0;
-  min-height: 35px;
+  min-height: 30px;
 }
 
 .topic-cell {
@@ -198,14 +198,14 @@
   align-items: center;
   justify-content: center;
   background: #e8e8e8;
-  border: 2px solid #4a9eff;
-  border-radius: 4px;
-  font-size: clamp(0.75em, 1.8vw, 1em);
+  border: 1px solid #4a9eff;
+  border-radius: 3px;
+  font-size: clamp(0.65em, 1.5vw, 0.85em);
   font-weight: bold;
   color: #333;
-  padding: 3px 6px;
+  padding: 2px 4px;
   width: 100%;
-  min-height: 35px;
+  min-height: 30px;
   height: 100%;
   text-align: center;
   white-space: nowrap;
@@ -221,16 +221,17 @@
 
 .surprise-cell {
   background-color: #fafafa;
-  min-height: 35px;
-  padding: 3px;
+  min-height: 30px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 3px;
   position: relative;
   transition: background-color 0.2s;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid #e0e0e0;
+  box-sizing: border-box;
 }
 
 .surprise-cell.has-surprise {
@@ -245,18 +246,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 0;
   cursor: move;
-  padding: 2px;
-  border-radius: 4px;
+  padding: 1px;
+  border-radius: 3px;
   transition: all 0.2s;
   user-select: none;
   width: 100%;
   max-width: 100%;
-  min-height: 28px;
+  min-height: 26px;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
+  box-sizing: border-box;
 }
 
 .surprise-item:hover {
@@ -269,9 +271,13 @@
 }
 
 .surprise-emoji {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   line-height: 1;
   display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  overflow: visible;
 }
 
 .surprise-name {
@@ -291,20 +297,21 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 28px;
+  min-height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .add-surprise-button {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 1.5px dashed #4a9eff;
+  border: 1px dashed #4a9eff;
   background-color: transparent;
   color: #4a9eff;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s;
@@ -312,6 +319,7 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .add-surprise-button:hover {
@@ -396,11 +404,12 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 28px;
+  min-height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 .surprise-menu {
