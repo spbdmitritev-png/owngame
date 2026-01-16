@@ -187,18 +187,21 @@ export default function QuestionsEditorModal({
     const { roundNumber, topicIndex, questionIndex } = showQuestionPicker
     const question = dbItem.question
     
-    // Обновляем все поля вопроса
+    console.log('📥 Selected question from DB:', { question, dbItem })
+    
+    // Обновляем все поля вопроса, включая медиа
     if (roundNumber === 'final') {
       const newTopics = localFinalRound.topics.map((topic, tIdx) => {
         if (tIdx === topicIndex) {
           const newQuestions = topic.questions.map((q, qIdx) => {
             if (qIdx === questionIndex) {
+              // Полностью заменяем вопрос данными из БД
               return {
-                ...q,
                 text: question.text,
                 answer: question.answer,
-                type: question.type,
+                type: question.type || 'text',
                 mediaUrl: question.mediaUrl,
+                isPlayed: false,
               }
             }
             return q
@@ -219,12 +222,13 @@ export default function QuestionsEditorModal({
             if (tIdx === topicIndex) {
               const newQuestions = topic.questions.map((q, qIdx) => {
                 if (qIdx === questionIndex) {
+                  // Полностью заменяем вопрос данными из БД
                   return {
-                    ...q,
                     text: question.text,
                     answer: question.answer,
-                    type: question.type,
+                    type: question.type || 'text',
                     mediaUrl: question.mediaUrl,
+                    isPlayed: false,
                   }
                 }
                 return q
@@ -240,6 +244,10 @@ export default function QuestionsEditorModal({
       setLocalRounds(updatedRounds)
       onRoundsChange(updatedRounds)
     }
+    
+    // Очищаем выбранный файл, если был
+    const mediaKey = `${roundNumber}_${topicIndex}_${questionIndex}`
+    setMediaFiles({ ...mediaFiles, [mediaKey]: null })
     
     setShowQuestionPicker(null)
   }
