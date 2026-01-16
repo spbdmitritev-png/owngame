@@ -88,10 +88,14 @@ export const questionsDB = {
 
   // Добавить вопрос
   async add(category: string, question: Question, price?: number): Promise<string> {
+    console.log('📤 questionsDB.add called with:', { category, question, price })
+    
     try {
       // Валидация обязательных полей
       if (!category || !question.text || !question.answer || !price || price <= 0) {
-        throw new Error('Category, question text, answer and price (must be > 0) are required')
+        const errorMsg = 'Category, question text, answer and price (must be > 0) are required'
+        console.error('❌ Validation failed:', { category, hasText: !!question.text, hasAnswer: !!question.answer, price })
+        throw new Error(errorMsg)
       }
 
       const requestBody = {
@@ -111,6 +115,9 @@ export const questionsDB = {
         delete requestBody.media_url
       }
 
+      console.log('🌐 Sending POST request to:', `${API_BASE_URL}/api/questions`)
+      console.log('📦 Request body:', requestBody)
+
       const response = await fetch(`${API_BASE_URL}/api/questions`, {
         method: 'POST',
         headers: {
@@ -119,12 +126,16 @@ export const questionsDB = {
         body: JSON.stringify(requestBody),
       })
 
+      console.log('📥 Response status:', response.status, response.statusText)
+
       if (!response.ok) {
         const errorText = await response.text()
+        console.error('❌ API error response:', errorText)
         throw new Error(errorText || 'Failed to add question')
       }
 
       const saved = await response.json()
+      console.log('✅ Question saved successfully:', saved)
       
       // Инвалидируем кеш
       questionsCache = null
@@ -132,7 +143,7 @@ export const questionsDB = {
 
       return saved.id
     } catch (error) {
-      console.error('Error adding question:', error)
+      console.error('❌ Error adding question:', error)
       throw error
     }
   },

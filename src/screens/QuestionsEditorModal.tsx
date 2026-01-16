@@ -241,8 +241,12 @@ export default function QuestionsEditorModal({
     questionIndex: number,
     category: string
   ) => {
+    console.log('🔥 SAVE TO DB CLICKED', { roundNumber, topicIndex, questionIndex, category })
+    
     const round = roundNumber === 'final' ? localFinalRound : localRounds.find((r) => r.number === roundNumber)
     const question = round?.topics[topicIndex]?.questions[questionIndex]
+    
+    console.log('📝 Question data:', { question, category })
     
     // Валидация перед отправкой
     if (!question || !category.trim()) {
@@ -257,7 +261,7 @@ export default function QuestionsEditorModal({
 
     // Получаем price из номинала вопроса
     const price = roundNumber === 'final' 
-      ? 0 // Для финального раунда можно использовать 0 или другое значение
+      ? 100 // Для финального раунда используем 100 по умолчанию
       : (currentRound?.values[questionIndex] || 100)
 
     if (!price || price <= 0) {
@@ -265,8 +269,12 @@ export default function QuestionsEditorModal({
       return
     }
 
+    console.log('🚀 Sending to API:', { category: category.trim(), price, question: question.text, answer: question.answer })
+
     try {
-      await questionsDB.add(category.trim(), question, price)
+      const savedId = await questionsDB.add(category.trim(), question, price)
+      console.log('✅ Question saved successfully:', savedId)
+      
       const key = `${roundNumber}_${topicIndex}_${questionIndex}`
       setCategoryInputs({ ...categoryInputs, [key]: '' })
       
@@ -287,7 +295,7 @@ export default function QuestionsEditorModal({
       
       alert('Вопрос успешно сохранён в базу данных!')
     } catch (error) {
-      console.error('Error saving question to DB:', error)
+      console.error('❌ Error saving question to DB:', error)
       const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка'
       alert(`Ошибка при сохранении вопроса: ${errorMessage}`)
     }
@@ -447,10 +455,14 @@ export default function QuestionsEditorModal({
                               <button
                                 className="save-to-db-button"
                                 onClick={() => {
+                                  console.log('🔘 Save to DB button clicked')
                                   const key = getCategoryInputKey(selectedRound, topicIndex, questionIndex)
                                   const category = categoryInputs[key] || ''
+                                  console.log('📋 Category from input:', category)
                                   if (category.trim()) {
                                     handleSaveToDB(selectedRound, topicIndex, questionIndex, category)
+                                  } else {
+                                    alert('Введите категорию перед сохранением')
                                   }
                                 }}
                               >
