@@ -71,51 +71,40 @@
 }
 
 .answer-content {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background: #FFFFFF;
-  padding: 60px;
-  border: none;
-  margin: 0;
+  padding: 48px;
+  border-radius: 20px;
+  border: 2px solid #22C55E;
+  margin-bottom: 48px;
   text-align: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .answer-content.correct-answer {
-  border: none;
+  border: 3px solid #22C55E;
   background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2), 0 0 0 1px rgba(34, 197, 94, 0.1);
 }
 
 .answer-label {
-  font-size: 2.2em;
+  font-size: 1.8em;
   color: #2563EB;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   font-weight: 600;
 }
 
 .answer-text {
-  font-size: 4.5em;
+  font-size: 3.2em;
   color: #1E1E2A;
   line-height: 1.4;
   width: 100%;
-  max-width: 1400px;
   text-align: center;
   word-wrap: break-word;
-  font-weight: 600;
-  margin: 0 auto;
+  font-weight: 500;
+  display: block;
 }
 
 /* Стили для аукциона */
