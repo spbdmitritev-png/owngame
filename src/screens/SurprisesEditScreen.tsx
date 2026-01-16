@@ -9,7 +9,7 @@ const SURPRISE_TYPES: SurpriseType[] = ['cat', 'auction', 'toast', 'gift']
 const SURPRISE_NAMES: Record<SurpriseType, string> = {
   cat: 'Кот в мешке',
   auction: 'Аукцион',
-  toast: 'Вопрос-тост',
+  toast: 'Тост',
   gift: 'Мгновенный подарок',
 }
 

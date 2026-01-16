@@ -162,7 +162,7 @@ export default function QuestionScreen() {
   // Экран ожидания для тоста и подарка
   if ((isToast || isGift) && showToastGiftWaiting) {
     const customDefault = gameState?.customSurprises?.[`default_${surpriseType}`]
-    const displayName = customDefault?.name || (isToast ? 'Вопрос-тост' : 'Мгновенный подарок')
+    const displayName = customDefault?.name || (isToast ? 'Тост' : 'Мгновенный подарок')
     const displayEmoji = customDefault?.emoji || (isToast ? '🥂' : '🎁')
     
     return (
@@ -453,7 +453,7 @@ function SurpriseAnimation({ type, gameState }: { type: SurpriseType; gameState:
   const DEFAULT_NAMES: Record<string, string> = {
     cat: 'Кот в мешке',
     auction: 'Аукцион',
-    toast: 'Вопрос-тост',
+    toast: 'Тост',
     gift: 'Мгновенный подарок',
   }
 
