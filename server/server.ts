@@ -7,7 +7,7 @@ import { pool } from './db.js'
 const app = express()
 const PORT = process.env.PORT || 3001
 
-// Test database connection
+// Test database connection on startup
 ;(async () => {
   try {
     const res = await pool.query('SELECT now()')
