@@ -12,6 +12,13 @@ export default function HostScreen() {
   
   // Получаем gameId из URL или из gameState
   const gameId = params.gameId || gameState?.gameId
+
+  // Редирект на /host/:gameId, если открыт /host без gameId, но gameState есть
+  useEffect(() => {
+    if (!params.gameId && gameState?.gameId && location.pathname === '/host') {
+      navigate(`/host/${gameState.gameId}`, { replace: true })
+    }
+  }, [params.gameId, gameState?.gameId, location.pathname, navigate])
   const [phase, setPhase] = useState<'bets' | 'question' | 'results'>('bets')
   const [teams, setTeams] = useState<Array<{ id: string; name: string; shortName: string; score: number }>>([])
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({})
