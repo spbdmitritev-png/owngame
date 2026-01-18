@@ -213,10 +213,22 @@ export default function HostScreen() {
   }
 
   // Используем gameState напрямую для получения актуальных счетов
+  // Используем gameState напрямую для реактивности
   const currentTeams = gameState?.teams || teams
   const sortedTeams = currentTeams.length > 0 
     ? [...currentTeams].sort((a, b) => b.score - a.score)
     : []
+  
+  // Вычисляем статусы ставок напрямую из gameState для реактивности
+  const hasBet = (teamId: string) => {
+    const bet = gameState?.finalBets?.[teamId]
+    return bet !== undefined && bet > 0
+  }
+  
+  // Вычисляем статусы ответов напрямую из gameState для реактивности
+  const hasAnswer = (teamId: string) => {
+    return teamId in (gameState?.finalAnswers || {})
+  }
 
   // Вычисляем очки до финального раунда для каждой команды
   const getScoreBeforeFinal = (teamId: string): number => {
