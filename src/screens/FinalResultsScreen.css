@@ -279,22 +279,25 @@
 .final-positions-list {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  padding: 40px;
+  gap: 12px;
+  padding: 20px;
 }
 
 .final-position-item {
   display: flex;
   align-items: center;
-  gap: 30px;
-  padding: 30px 50px;
+  gap: 20px;
+  padding: 16px 24px;
   background: linear-gradient(135deg, rgba(22, 33, 62, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
-  border: 3px solid #4a9eff;
-  border-radius: 15px;
-  min-width: 600px;
+  border: 2px solid #4a9eff;
+  border-radius: 12px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   opacity: 0;
   transform: translateY(-50px) scale(0.8);
   transition: all 0.8s ease-out;
+  box-sizing: border-box;
 }
 
 .final-position-item.hidden {
@@ -324,16 +327,16 @@
 }
 
 .final-position-rank {
-  font-size: 4em;
+  font-size: 2.5em;
   font-weight: bold;
   color: #4a9eff;
-  min-width: 100px;
+  min-width: 60px;
   text-align: center;
 }
 
 .final-position-item.position-1 .final-position-rank {
   color: #ffd700;
-  font-size: 5em;
+  font-size: 3em;
 }
 
 .final-position-team {
@@ -341,15 +344,15 @@
 }
 
 .final-position-short {
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-weight: bold;
   color: #4a9eff;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .final-position-item.position-1 .final-position-short {
   color: #ffd700;
-  font-size: 3em;
+  font-size: 1.8em;
 }
 
 .final-position-name {
@@ -360,13 +363,13 @@
 .final-position-scores {
   display: flex;
   align-items: center;
-  gap: 15px;
-  min-width: 300px;
+  gap: 10px;
+  min-width: 200px;
   justify-content: flex-end;
 }
 
 .score-before-display {
-  font-size: 2em;
+  font-size: 1.3em;
   color: #4a9eff;
   font-weight: 600;
 }
@@ -406,15 +409,15 @@
 }
 
 .final-score-display {
-  font-size: 2.5em;
+  font-size: 1.8em;
   color: #ffd700;
   font-weight: bold;
-  min-width: 120px;
+  min-width: 100px;
   text-align: right;
 }
 
 .final-position-item.position-1 .final-score-display {
-  font-size: 3em;
+  font-size: 2em;
 }
 
 /* Победитель */
@@ -442,38 +445,38 @@
 }
 
 .winner-content h2 {
-  font-size: 2.5em;
+  font-size: 1.8em;
   color: #4a9eff;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .winner-name {
-  font-size: 3em;
+  font-size: 2em;
   color: #ffd700;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
 }
 
 .winner-short {
-  font-size: 2.5em;
+  font-size: 1.5em;
   color: #4a9eff;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .winner-score {
-  font-size: 2.5em;
+  font-size: 1.8em;
   color: #4a9eff;
   font-weight: bold;
 }
 
 .analytics-button {
-  margin-top: 30px;
-  padding: 20px 50px;
-  font-size: 1.5em;
+  margin-top: 16px;
+  padding: 12px 30px;
+  font-size: 1.1em;
   font-weight: bold;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #4a9eff 0%, #357abd 100%);
