@@ -192,6 +192,7 @@ export default function QuestionScreen() {
         <GameSettings />
         <div className="auction-header">
           <div className="auction-title">🔨 Аукцион</div>
+          <div className="auction-value">Номинал: {value}</div>
           <div className="auction-subtitle">Выберите команду, которая будет играть этот вопрос</div>
         </div>
         <div className="teams-selection">
@@ -220,6 +221,7 @@ export default function QuestionScreen() {
         <GameSettings />
         <div className="auction-header">
           <div className="auction-title">🔨 Аукцион</div>
+          <div className="auction-value">Номинал: {value}</div>
           <div className="auction-subtitle">
             Команда: <strong>{gameState.teams.find(t => t.id === auctionTeam)?.name || ''}</strong>
           </div>
