@@ -40,12 +40,15 @@
 }
 
 .host-section {
-  max-width: 1200px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .host-section h2 {
@@ -158,8 +161,9 @@
   padding: 15px 20px;
   border-radius: 10px;
   border: 2px solid #4a9eff;
-  max-width: 600px;
+  max-width: 100%;
   word-wrap: break-word;
+  flex: 1;
 }
 
 .host-buttons-group {
