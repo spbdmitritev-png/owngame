@@ -217,10 +217,16 @@ export default function HostScreen() {
 
   // Используем gameState напрямую для получения актуальных счетов
   // Используем gameState напрямую для реактивности
+  // Используем gameState напрямую для реактивности
   const currentTeams = gameState?.teams || teams
   const sortedTeams = currentTeams.length > 0 
     ? [...currentTeams].sort((a, b) => b.score - a.score)
     : []
+  
+  // Вычисляем статусы ставок напрямую из gameState для реактивности
+  const getBetForTeam = (teamId: string) => {
+    return gameState?.finalBets?.[teamId]
+  }
   
   // Вычисляем статусы ставок напрямую из gameState для реактивности
   const hasBet = (teamId: string) => {
