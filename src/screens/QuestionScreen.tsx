@@ -179,7 +179,7 @@ export default function QuestionScreen() {
         <GameSettings />
         <div className="toast-gift-header">
           <div className="toast-gift-title">{displayEmoji} {displayName}</div>
-          <div className="toast-gift-subtitle click-hint">Нажмите на экран, чтобы вернуться к вопросам</div>
+          <div className="toast-gift-subtitle click-hint">Нажмите на экран, чтобы показать вопрос</div>
         </div>
       </div>
     )
