@@ -25,6 +25,7 @@ function App() {
           <Route path="/final/question" element={<FinalQuestionScreen />} />
           <Route path="/final/results" element={<FinalResultsScreen />} />
           <Route path="/analytics" element={<AnalyticsScreen />} />
+          <Route path="/host/:gameId" element={<HostScreen />} />
           <Route path="/host" element={<HostScreen />} />
         </Routes>
       </BrowserRouter>

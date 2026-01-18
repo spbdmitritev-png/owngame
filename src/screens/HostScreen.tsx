@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
 import { API_BASE_URL } from '../config/api'
 import './HostScreen.css'
@@ -7,7 +7,11 @@ import './HostScreen.css'
 export default function HostScreen() {
   const navigate = useNavigate()
   const location = useLocation()
+  const params = useParams<{ gameId?: string }>()
   const { gameState, updateGameState, updateTeamScore, setFinalAnswer, setFinalBet, setFinalTeamAnswer } = useGame()
+  
+  // Получаем gameId из URL или из gameState
+  const gameId = params.gameId || gameState?.gameId
   const [phase, setPhase] = useState<'bets' | 'question' | 'results'>('bets')
   const [teams, setTeams] = useState<Array<{ id: string; name: string; shortName: string; score: number }>>([])
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({})
@@ -22,20 +26,25 @@ export default function HostScreen() {
 
   // Загружаем состояние из API при первом открытии HostScreen
   useEffect(() => {
+    if (!gameId) {
+      console.warn('[HostScreen] No gameId available')
+      return
+    }
+
     const loadGameStateFromAPI = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/game-state`)
+        const response = await fetch(`${API_BASE_URL}/api/game-state/${gameId}`)
         if (response.ok) {
           const apiState = await response.json()
           if (apiState && apiState.teams) {
-            console.log('[HostScreen] Loaded gameState from API')
+            console.log('[HostScreen] Loaded gameState from API with gameId:', gameId)
             updateGameState(apiState)
           } else if (response.status === 200 && !apiState) {
             // API вернул null - игра еще не начата
-            console.log('[HostScreen] No game state in API yet')
+            console.log('[HostScreen] No game state in API yet for gameId:', gameId)
           }
         } else if (response.status === 404) {
-          console.log('[HostScreen] No game state found in API')
+          console.log('[HostScreen] No game state found in API for gameId:', gameId)
         }
       } catch (error) {
         console.warn('[HostScreen] Error loading gameState from API:', error)
@@ -55,7 +64,7 @@ export default function HostScreen() {
         clearInterval(syncIntervalRef.current)
       }
     }
-  }, [updateGameState])
+  }, [gameId, updateGameState])
 
   // Загружаем команды из localStorage или gameState
   useEffect(() => {

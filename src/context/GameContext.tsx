@@ -48,30 +48,34 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null
   })
 
-  // Если gameState null и мы на странице /host, пытаемся загрузить из API
+  // Если gameState null и мы на странице /host/:gameId, пытаемся загрузить из API
   useEffect(() => {
-    if (!gameState && typeof window !== 'undefined' && window.location.pathname === '/host') {
-      const loadFromAPI = async () => {
-        try {
-          const response = await fetch(`${API_BASE_URL}/api/game-state`)
-          if (response.ok) {
-            const apiState = await response.json()
-            if (apiState && apiState.teams) {
-              console.log('[GameContext] Loaded gameState from API on /host page')
-              setGameState(apiState)
-              // Также сохраняем в localStorage для кэширования
-              try {
-                localStorage.setItem(GAME_STATE_STORAGE_KEY, JSON.stringify(apiState))
-              } catch (e) {
-                console.warn('[GameContext] Failed to save to localStorage:', e)
+    if (typeof window !== 'undefined') {
+      const pathMatch = window.location.pathname.match(/^\/host\/([^/]+)$/)
+      if (pathMatch && !gameState) {
+        const gameId = pathMatch[1]
+        const loadFromAPI = async () => {
+          try {
+            const response = await fetch(`${API_BASE_URL}/api/game-state/${gameId}`)
+            if (response.ok) {
+              const apiState = await response.json()
+              if (apiState && apiState.teams) {
+                console.log('[GameContext] Loaded gameState from API on /host page with gameId:', gameId)
+                setGameState(apiState)
+                // Также сохраняем в localStorage для кэширования
+                try {
+                  localStorage.setItem(GAME_STATE_STORAGE_KEY, JSON.stringify(apiState))
+                } catch (e) {
+                  console.warn('[GameContext] Failed to save to localStorage:', e)
+                }
               }
             }
+          } catch (error) {
+            console.warn('[GameContext] Error loading gameState from API:', error)
           }
-        } catch (error) {
-          console.warn('[GameContext] Error loading gameState from API:', error)
         }
+        loadFromAPI()
       }
-      loadFromAPI()
     }
   }, [gameState])
 
@@ -96,9 +100,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         prevStateRef.current = stateToSave // Сохраняем текущее состояние
         
         // Сохраняем в API асинхронно (не блокируем UI)
-        if (!isSavingRef.current) {
+        if (!isSavingRef.current && gameState.gameId) {
           isSavingRef.current = true
-          fetch(`${API_BASE_URL}/api/game-state`, {
+          fetch(`${API_BASE_URL}/api/game-state/${gameState.gameId}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -109,7 +113,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               if (!res.ok) {
                 console.warn('[GameContext] Failed to save gameState to API:', res.statusText)
               } else {
-                console.log('[GameContext] Saved gameState to API')
+                console.log('[GameContext] Saved gameState to API with gameId:', gameState.gameId)
               }
             })
             .catch((error) => {
@@ -163,9 +167,15 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const setGameConfig = useCallback((config: GameConfig) => {
     console.log('[GameContext] setGameConfig called with config:', config)
     
+    // Генерируем уникальный ID игры, если его еще нет
+    const generateGameId = () => {
+      return `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    }
+    
     // Если игра уже идет, сохраняем существующие данные финального раунда
     const existingState = gameState
     const preservedData = existingState ? {
+      gameId: existingState.gameId || generateGameId(), // Сохраняем существующий gameId или генерируем новый
       finalBets: existingState.finalBets || {},
       finalAnswers: existingState.finalAnswers || {},
       finalTeamAnswers: existingState.finalTeamAnswers || {},
@@ -176,6 +186,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       isFinalRound: existingState.isFinalRound || false,
       questionAnswers: existingState.questionAnswers || [],
     } : {
+      gameId: generateGameId(), // Генерируем новый gameId для новой игры
       finalBets: {},
       finalAnswers: {},
       finalTeamAnswers: {},
@@ -197,6 +208,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       })),
     }
     console.log('[GameContext] Setting gameState with preserved data:', newState)
+    console.log('[GameContext] Game ID:', newState.gameId)
     setGameState(newState)
     // Сохраняем конфигурацию в localStorage для доступа из TeamScreen
     localStorage.setItem('gameConfig', JSON.stringify(config))
@@ -471,12 +483,14 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
     keysToRemove.forEach(key => localStorage.removeItem(key))
-    // Удаляем состояние из API
-    fetch(`${API_BASE_URL}/api/game-state`, {
-      method: 'DELETE',
-    }).catch((error) => {
-      console.warn('[GameContext] Error deleting game state from API:', error)
-    })
+    // Удаляем состояние из API, если есть gameId
+    if (gameState?.gameId) {
+      fetch(`${API_BASE_URL}/api/game-state/${gameState.gameId}`, {
+        method: 'DELETE',
+      }).catch((error) => {
+        console.warn('[GameContext] Error deleting game state from API:', error)
+      })
+    }
     console.log('[GameContext] Game reset complete - all state and localStorage cleared')
   }, [])
 

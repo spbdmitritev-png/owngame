@@ -126,24 +126,34 @@ export default function GameSettings() {
               </div>
             </div>
             <div className="settings-actions">
-              <a 
-                href="/host" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="settings-action-button host-link"
-              >
-                📊 Панель ведущего
-              </a>
-              <div className="host-url-info">
-                <span className="host-url-label">URL для другого устройства:</span>
-                <input
-                  type="text"
-                  readOnly
-                  value={`${window.location.origin}/host`}
-                  className="host-url-input"
-                  onClick={(e) => (e.target as HTMLInputElement).select()}
-                />
-              </div>
+              {gameState?.gameId ? (
+                <>
+                  <a 
+                    href={`/host/${gameState.gameId}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="settings-action-button host-link"
+                  >
+                    📊 Панель ведущего
+                  </a>
+                  <div className="host-url-info">
+                    <span className="host-url-label">URL для другого устройства:</span>
+                    <input
+                      type="text"
+                      readOnly
+                      value={`${window.location.origin}/host/${gameState.gameId}`}
+                      className="host-url-input"
+                      onClick={(e) => (e.target as HTMLInputElement).select()}
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="host-url-info">
+                  <span className="host-url-label" style={{ color: '#9CA3AF' }}>
+                    URL панели ведущего появится после запуска игры
+                  </span>
+                </div>
+              )}
               <button className="settings-action-button" onClick={handleBackToConfig}>
                 Вернуться к настройкам
               </button>

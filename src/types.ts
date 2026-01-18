@@ -64,6 +64,7 @@ export interface QuestionAnswer {
 }
 
 export interface GameState extends GameConfig {
+  gameId?: string // Уникальный ID игры для синхронизации между устройствами
   currentRound: number
   isFinalRound: boolean
   finalBets: Record<string, number> // teamId -> bet

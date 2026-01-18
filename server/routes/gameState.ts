@@ -3,14 +3,14 @@ import { pool } from '../db.js'
 
 export const gameStateRouter = Router()
 
-const GAME_STATE_KEY = 'current_game_state'
-
-// Получить текущее состояние игры
-gameStateRouter.get('/', async (req, res) => {
+// Получить состояние игры по gameId
+gameStateRouter.get('/:gameId', async (req, res) => {
   try {
+    const { gameId } = req.params
+    
     const { rows } = await pool.query(
       `SELECT value FROM game_state WHERE key = $1`,
-      [GAME_STATE_KEY]
+      [gameId]
     )
     
     if (rows.length === 0) {
@@ -25,9 +25,10 @@ gameStateRouter.get('/', async (req, res) => {
   }
 })
 
-// Сохранить состояние игры
-gameStateRouter.post('/', async (req, res) => {
+// Сохранить состояние игры по gameId
+gameStateRouter.post('/:gameId', async (req, res) => {
   try {
+    const { gameId } = req.params
     const gameState = req.body
     
     if (!gameState) {
@@ -42,7 +43,7 @@ gameStateRouter.post('/', async (req, res) => {
        VALUES ($1, $2, NOW())
        ON CONFLICT (key)
        DO UPDATE SET value = $2, updated_at = NOW()`,
-      [GAME_STATE_KEY, gameStateJson]
+      [gameId, gameStateJson]
     )
     
     res.json({ message: 'Game state saved successfully' })
@@ -52,12 +53,14 @@ gameStateRouter.post('/', async (req, res) => {
   }
 })
 
-// Удалить состояние игры
-gameStateRouter.delete('/', async (req, res) => {
+// Удалить состояние игры по gameId
+gameStateRouter.delete('/:gameId', async (req, res) => {
   try {
+    const { gameId } = req.params
+    
     await pool.query(
       `DELETE FROM game_state WHERE key = $1`,
-      [GAME_STATE_KEY]
+      [gameId]
     )
     
     res.json({ message: 'Game state deleted successfully' })
