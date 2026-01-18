@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
 import './HostScreen.css'
@@ -219,14 +219,23 @@ export default function HostScreen() {
   // Используем gameState напрямую для реактивности
   // Используем gameState напрямую для реактивности
   const currentTeams = gameState?.teams || teams
-  const sortedTeams = currentTeams.length > 0 
-    ? [...currentTeams].sort((a, b) => b.score - a.score)
-    : []
+  const sortedTeams = useMemo(() => {
+    return currentTeams.length > 0 
+      ? [...currentTeams].sort((a, b) => b.score - a.score)
+      : []
+  }, [currentTeams, gameState?.teams?.map(t => `${t.id}:${t.score}`).join('|')])
   
   // Вычисляем статусы ставок напрямую из gameState для реактивности
-  const getBetForTeam = (teamId: string) => {
-    return gameState?.finalBets?.[teamId]
-  }
+  // Используем useMemo для гарантированного обновления при изменении finalBets
+  const finalBetsKey = useMemo(() => {
+    return gameState?.finalBets ? JSON.stringify(gameState.finalBets) : ''
+  }, [gameState?.finalBets])
+  
+  const getBetForTeam = useMemo(() => {
+    return (teamId: string) => {
+      return gameState?.finalBets?.[teamId]
+    }
+  }, [finalBetsKey, gameState?.finalBets])
   
   // Вычисляем статусы ставок напрямую из gameState для реактивности
   const hasBet = (teamId: string) => {
