@@ -44,7 +44,12 @@ export default function HostScreen() {
         if (response.ok) {
           const apiState = await response.json()
           if (apiState && apiState.teams) {
-            console.log('[HostScreen] Loaded gameState from API with gameId:', gameId)
+            console.log('[HostScreen] Loaded gameState from API with gameId:', gameId, {
+              isFinalRound: apiState.isFinalRound,
+              selectedFinalTopic: apiState.selectedFinalTopic,
+              finalBetsCount: Object.keys(apiState.finalBets || {}).length,
+              teamsCount: apiState.teams?.length
+            })
             updateGameState(apiState)
           } else if (response.status === 200 && !apiState) {
             // API вернул null - игра еще не начата
@@ -345,13 +350,35 @@ export default function HostScreen() {
   }
 
   // Если не в финальном раунде, показываем сообщение
-  if (gameState?.selectedFinalTopic === null) {
+  // Проверяем несколько условий: isFinalRound, наличие finalBets, selectedFinalTopic, или наличие finalRound
+  const hasFinalRound = gameState?.finalRound && gameState.finalRound.topics && gameState.finalRound.topics.length > 0
+  const isInFinalRound = gameState?.isFinalRound || 
+                         (gameState?.finalBets && Object.keys(gameState.finalBets).length > 0) ||
+                         gameState?.selectedFinalTopic !== null ||
+                         hasFinalRound ||
+                         (gameState && gameState.currentRound > (gameState.numberOfRounds || 0))
+
+  if (!isInFinalRound) {
     return (
       <div className="host-screen">
         <div className="host-header">
           <h1>Панель ведущего</h1>
           <div className="loading-message">
-            Панель ведущего доступна только в финальном раунде
+            <p>Панель ведущего доступна только в финальном раунде</p>
+            <p style={{ fontSize: '0.85em', color: '#9CA3AF', marginTop: '10px' }}>
+              {gameState ? (
+                <>
+                  Статус: isFinalRound={String(gameState.isFinalRound)}, 
+                  selectedFinalTopic={String(gameState.selectedFinalTopic)}, 
+                  finalBets={Object.keys(gameState.finalBets || {}).length},
+                  currentRound={gameState.currentRound},
+                  numberOfRounds={gameState.numberOfRounds},
+                  hasFinalRound={String(hasFinalRound)}
+                </>
+              ) : (
+                'Загрузка состояния игры...'
+              )}
+            </p>
           </div>
         </div>
       </div>

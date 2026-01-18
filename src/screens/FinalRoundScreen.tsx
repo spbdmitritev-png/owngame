@@ -6,7 +6,18 @@ import './FinalRoundScreen.css'
 
 export default function FinalRoundScreen() {
   const navigate = useNavigate()
-  const { gameState, setSelectedFinalTopic, setSelectedFinalQuestion, setExcludedFinalTopics } = useGame()
+  const { gameState, updateGameState, setSelectedFinalTopic, setSelectedFinalQuestion, setExcludedFinalTopics } = useGame()
+  
+  // Устанавливаем isFinalRound: true при открытии финального раунда
+  useEffect(() => {
+    if (gameState && !gameState.isFinalRound) {
+      updateGameState({
+        ...gameState,
+        isFinalRound: true,
+        currentRound: gameState.numberOfRounds + 1, // Финальный раунд
+      })
+    }
+  }, [gameState, updateGameState])
   
   // Восстанавливаем excludedTopics из gameState или используем пустой массив
   const [excludedTopics, setExcludedTopics] = useState<number[]>(
