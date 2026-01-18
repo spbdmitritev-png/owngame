@@ -269,7 +269,7 @@
 
 .topic-name {
   font-size: 1.8em;
-  color: #1E1E2A;
+  color: #000000 !important;
   font-weight: 700;
   word-wrap: break-word;
   overflow-wrap: break-word;
