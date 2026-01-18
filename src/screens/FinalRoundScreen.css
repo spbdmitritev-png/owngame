@@ -1,12 +1,17 @@
 .final-round-screen {
-  min-height: 100vh;
+  height: 100vh;
   padding: 48px;
   background: linear-gradient(135deg, #F5F7FA 0%, #F9FAFB 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .final-header {
   text-align: center;
   margin-bottom: 56px;
+  flex-shrink: 0;
 }
 
 .final-header h1 {
@@ -24,6 +29,10 @@
 .final-content {
   max-width: 1200px;
   margin: 0 auto;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .topic-selection h2 {

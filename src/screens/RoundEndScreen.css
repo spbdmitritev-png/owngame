@@ -1,5 +1,5 @@
 .round-end-screen {
-  min-height: 100vh;
+  height: 100vh;
   padding: 40px;
   background: #1a1a2e;
   display: flex;
@@ -7,6 +7,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .round-end-screen:not(:has(.continue-button)) {

@@ -1,9 +1,11 @@
 .question-screen {
-  min-height: 100vh;
+  height: 100vh;
   padding: 48px;
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #F5F7FA 0%, #F9FAFB 100%);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .question-header {

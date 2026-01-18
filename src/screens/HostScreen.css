@@ -1,7 +1,11 @@
 .host-screen {
-  min-height: 100vh;
+  height: 100vh;
   padding: 40px;
   background: #1a1a2e;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .host-header {
@@ -11,6 +15,7 @@
   background: #16213e;
   border-radius: 15px;
   border: 3px solid #ffd700;
+  flex-shrink: 0;
 }
 
 .host-header h1 {
@@ -37,6 +42,10 @@
 .host-section {
   max-width: 1200px;
   margin: 0 auto;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .host-section h2 {

@@ -137,7 +137,7 @@ export default function FinalResultsScreen() {
       <div className="final-results-header">
         <h1>Финальные результаты</h1>
       </div>
-
+      <div className="final-results-content">
       {/* Этап 1: Ответы и ставки вместе */}
       {!showScoresBeforeFinal && (
         <div className="teams-answers-stage">
@@ -311,6 +311,7 @@ export default function FinalResultsScreen() {
           </button>
           </div>
         )}
+      </div>
     </div>
   )
 }
