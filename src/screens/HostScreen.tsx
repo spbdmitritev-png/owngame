@@ -67,7 +67,10 @@ export default function HostScreen() {
     if (gameState && gameState.teams) {
       setTeams([...gameState.teams])
     }
-  }, [gameState?.finalBets ? JSON.stringify(gameState.finalBets) : ''])
+  }, [
+    gameState?.finalBets ? JSON.stringify(gameState.finalBets) : '',
+    gameState?.teams ? JSON.stringify(gameState.teams.map(t => ({ id: t.id, score: t.score }))) : ''
+  ])
 
   // Определяем фазу финального раунда на основе gameState
   useEffect(() => {
