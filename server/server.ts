@@ -46,9 +46,9 @@ app.get('/', (req, res) => {
         delete: 'DELETE /api/games/:id'
       },
       gameState: {
-        get: 'GET /api/game-state',
-        save: 'POST /api/game-state',
-        delete: 'DELETE /api/game-state'
+        get: 'GET /api/game-state/:gameId',
+        save: 'POST /api/game-state/:gameId',
+        delete: 'DELETE /api/game-state/:gameId'
       }
     }
   })
