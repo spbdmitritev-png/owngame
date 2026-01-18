@@ -27,13 +27,16 @@
 }
 
 .final-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   flex: 1;
   overflow: hidden;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .topic-selection {
@@ -42,6 +45,8 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .topic-selection h2 {
@@ -103,13 +108,15 @@
 
 .topics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
   padding: 8px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .topic-button {
@@ -169,18 +176,21 @@
 .selected-topic {
   text-align: center;
   margin-bottom: 24px;
-  padding: 20px;
+  padding: 32px;
   background: #FFFFFF;
   border-radius: 16px;
-  border: 1px solid #E5E7EB;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 2px solid #2563EB;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
   flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .selected-topic h2 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   color: #1E1E2A;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-weight: 600;
 }
 
@@ -258,9 +268,12 @@
 }
 
 .topic-name {
-  font-size: 2em;
-  color: #1E1E2A;
+  font-size: 2.5em;
+  color: #2563EB;
   font-weight: 700;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.3;
 }
 
 .bets-section {
@@ -408,16 +421,24 @@
 }
 
 .selected-topic-section {
-  margin-top: 40px;
+  margin-top: 24px;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .teams-bets-status {
-  margin-top: 40px;
-  padding: 32px;
+  margin-top: 24px;
+  padding: 24px;
   background: #FFFFFF;
   border-radius: 16px;
   border: 1px solid #E5E7EB;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .teams-bets-status h3 {
