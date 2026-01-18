@@ -48,6 +48,33 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null
   })
 
+  // Если gameState null и мы на странице /host, пытаемся загрузить из API
+  useEffect(() => {
+    if (!gameState && typeof window !== 'undefined' && window.location.pathname === '/host') {
+      const loadFromAPI = async () => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/game-state`)
+          if (response.ok) {
+            const apiState = await response.json()
+            if (apiState && apiState.teams) {
+              console.log('[GameContext] Loaded gameState from API on /host page')
+              setGameState(apiState)
+              // Также сохраняем в localStorage для кэширования
+              try {
+                localStorage.setItem(GAME_STATE_STORAGE_KEY, JSON.stringify(apiState))
+              } catch (e) {
+                console.warn('[GameContext] Failed to save to localStorage:', e)
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('[GameContext] Error loading gameState from API:', error)
+        }
+      }
+      loadFromAPI()
+    }
+  }, [gameState])
+
   // Сохраняем состояние в localStorage и API при каждом изменении
   // Используем useRef для отслеживания предыдущего состояния, чтобы избежать бесконечных циклов
   const prevStateRef = useRef<string>('')

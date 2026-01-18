@@ -30,14 +30,19 @@ export default function HostScreen() {
           if (apiState && apiState.teams) {
             console.log('[HostScreen] Loaded gameState from API')
             updateGameState(apiState)
+          } else if (response.status === 200 && !apiState) {
+            // API вернул null - игра еще не начата
+            console.log('[HostScreen] No game state in API yet')
           }
+        } else if (response.status === 404) {
+          console.log('[HostScreen] No game state found in API')
         }
       } catch (error) {
         console.warn('[HostScreen] Error loading gameState from API:', error)
       }
     }
 
-    // Загружаем сразу при открытии
+    // Загружаем сразу при открытии (даже если gameState уже есть, обновляем из API)
     loadGameStateFromAPI()
 
     // Настраиваем периодическое обновление каждые 2 секунды
