@@ -42,9 +42,11 @@
 .topic-selection {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  flex: 1;
+  min-height: 0;
   width: 100%;
   max-width: 100%;
+  overflow: hidden;
 }
 
 .topic-selection h2 {
@@ -108,8 +110,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
-  flex-shrink: 0;
-  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 8px;
   width: 100%;
   max-width: 100%;
