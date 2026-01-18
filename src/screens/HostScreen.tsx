@@ -53,6 +53,22 @@ export default function HostScreen() {
     gameState?.finalBets ? Object.keys(gameState.finalBets).map(id => `${id}:${gameState.finalBets[id]}`).join('|') : ''
   ])
 
+  // Обновляем checkedAnswers в реальном времени при изменении gameState.finalAnswers
+  useEffect(() => {
+    if (gameState?.finalAnswers) {
+      setCheckedAnswers(gameState.finalAnswers)
+    } else {
+      setCheckedAnswers({})
+    }
+  }, [gameState?.finalAnswers ? JSON.stringify(gameState.finalAnswers) : ''])
+
+  // Принудительно обновляем команды при изменении finalBets для реактивности
+  useEffect(() => {
+    if (gameState && gameState.teams) {
+      setTeams([...gameState.teams])
+    }
+  }, [gameState?.finalBets ? JSON.stringify(gameState.finalBets) : ''])
+
   // Определяем фазу финального раунда на основе gameState
   useEffect(() => {
     if (gameState) {
