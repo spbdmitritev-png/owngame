@@ -1,6 +1,6 @@
 .final-results-screen {
   height: 100vh;
-  padding: 40px;
+  padding: 20px;
   background: #1a1a2e;
   overflow: hidden;
   display: flex;
@@ -10,12 +10,12 @@
 
 .final-results-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   flex-shrink: 0;
 }
 
 .final-results-header h1 {
-  font-size: 4em;
+  font-size: 2.5em;
   color: #ffd700;
   text-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
   animation: glow 2s infinite;
@@ -44,36 +44,37 @@
 .teams-bets-stage,
 .scores-before-final-stage,
 .final-table-stage {
-  max-width: 1200px;
-  margin: 0 auto 50px;
+  max-width: 100%;
+  margin: 0 auto 20px;
+  width: 100%;
 }
 
 .teams-answers-stage h2,
 .teams-bets-stage h2,
 .scores-before-final-stage h2,
 .final-table-stage h2 {
-  font-size: 2.5em;
+  font-size: 1.8em;
   color: #ffd700;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
 .teams-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .team-result-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
-  padding: 25px 40px;
+  gap: 16px;
+  padding: 16px 20px;
   background: rgba(22, 33, 62, 0.8);
   border: 2px solid #4a9eff;
-  border-radius: 15px;
+  border-radius: 12px;
   transition: all 0.3s ease;
 }
 
@@ -90,13 +91,13 @@
 }
 
 .team-result-name {
-  font-size: 1.8em;
+  font-size: 1.2em;
   font-weight: 600;
   color: #fff;
 }
 
 .team-result-short {
-  font-size: 1.3em;
+  font-size: 1em;
   color: #4a9eff;
   font-weight: bold;
 }
@@ -111,24 +112,27 @@
 
 .team-result-answer-section,
 .team-result-bet-section {
-  min-width: 300px;
+  min-width: 200px;
+  max-width: 400px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex: 1;
 }
 
 .show-answer-button,
 .show-bet-button {
-  padding: 15px 30px;
-  font-size: 1.2em;
+  padding: 10px 20px;
+  font-size: 1em;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #4a9eff 0%, #357abd 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+  white-space: nowrap;
 }
 
 .show-answer-button:hover,
@@ -141,31 +145,35 @@
 .team-bet-display {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 15px 20px;
+  gap: 6px;
+  padding: 12px 16px;
   background: rgba(15, 52, 96, 0.6);
-  border-radius: 10px;
+  border-radius: 8px;
   border: 2px solid #4caf50;
-  min-width: 250px;
+  min-width: 180px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .answer-label,
 .bet-label {
-  font-size: 0.9em;
+  font-size: 0.75em;
   color: #aaa;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .answer-text {
-  font-size: 1.3em;
+  font-size: 1em;
   color: #fff;
   font-weight: 500;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 .bet-value {
-  font-size: 2em;
+  font-size: 1.5em;
   color: #ffd700;
   font-weight: bold;
 }
