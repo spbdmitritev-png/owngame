@@ -1,6 +1,6 @@
 .final-round-screen {
   height: 100vh;
-  padding: 48px;
+  padding: 24px;
   background: linear-gradient(135deg, #F5F7FA 0%, #F9FAFB 100%);
   overflow: hidden;
   display: flex;
@@ -10,7 +10,7 @@
 
 .final-header {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 24px;
   flex-shrink: 0;
 }
 
@@ -30,25 +30,36 @@
   max-width: 1200px;
   margin: 0 auto;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topic-selection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .topic-selection h2 {
   text-align: center;
-  font-size: 2.5em;
+  font-size: 2em;
   color: #1E1E2A;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .instruction {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1em;
   color: #6B7280;
-  margin-bottom: 40px;
-  line-height: 1.8;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  flex-shrink: 0;
 }
 
 .current-team-hint {
@@ -92,23 +103,32 @@
 
 .topics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  padding: 8px;
 }
 
 .topic-button {
-  padding: 36px;
+  padding: 20px;
   background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
   border: 2px solid #E5E7EB;
-  border-radius: 16px;
+  border-radius: 12px;
   color: #1E1E2A;
-  font-size: 1.7em;
+  font-size: 1.3em;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .topic-button::before {
@@ -148,24 +168,26 @@
 
 .selected-topic {
   text-align: center;
-  margin-bottom: 48px;
-  padding: 32px;
+  margin-bottom: 24px;
+  padding: 20px;
   background: #FFFFFF;
   border-radius: 16px;
   border: 1px solid #E5E7EB;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .selected-topic h2 {
-  font-size: 2em;
+  font-size: 1.5em;
   color: #1E1E2A;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   font-weight: 600;
 }
 
 
 .bets-status {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
 .bets-status h2 {
@@ -236,8 +258,8 @@
 }
 
 .topic-name {
-  font-size: 3em;
-  color: #2563EB;
+  font-size: 2em;
+  color: #1E1E2A;
   font-weight: 700;
 }
 
