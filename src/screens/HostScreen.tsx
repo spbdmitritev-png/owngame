@@ -315,7 +315,13 @@ export default function HostScreen() {
         <div className="host-header">
           <h1>Панель ведущего</h1>
           <div className="loading-message">
-            Загрузка данных... Убедитесь, что игра запущена.
+            <p>Загрузка данных из сервера...</p>
+            <p style={{ fontSize: '0.9em', color: '#6B7280', marginTop: '10px' }}>
+              Убедитесь, что игра запущена на основном устройстве.
+            </p>
+            <p style={{ fontSize: '0.85em', color: '#9CA3AF', marginTop: '8px' }}>
+              Панель автоматически обновляется каждые 2 секунды.
+            </p>
           </div>
         </div>
       </div>
