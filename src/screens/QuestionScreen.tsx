@@ -160,9 +160,8 @@ export default function QuestionScreen() {
   }
 
   const handleToastGiftClick = () => {
-    // Для тоста и подарка просто возвращаемся к вопросам
-    markQuestionAsPlayed(roundNum, topicIdx, valueIdx)
-    navigate(`/round/${roundNum}`)
+    // Для тоста и подарка после клика показываем сам вопрос
+    setShowToastGiftWaiting(false)
   }
 
   if (showSurprise && surpriseType) {
