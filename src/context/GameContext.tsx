@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from 'react'
 import { GameState, GameConfig, SurpriseType, QuestionAnswer } from '../types'
+import { API_BASE_URL } from '../config/api'
 
 const GAME_STATE_STORAGE_KEY = 'svoyaIgra_gameState'
 
 interface GameContextType {
   gameState: GameState | null
   setGameConfig: (config: GameConfig) => void
+  updateGameState: (state: GameState) => void
   updateTeamScore: (teamId: string, points: number) => void
   markQuestionAsPlayed: (roundNumber: number, topicIndex: number, questionIndex: number) => void
   recordQuestionAnswer: (roundNumber: number, topicIndex: number, questionIndex: number, teamId: string, isCorrect: boolean, value: number, topicName: string) => void
@@ -46,9 +48,10 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null
   })
 
-  // Сохраняем состояние в localStorage при каждом изменении
+  // Сохраняем состояние в localStorage и API при каждом изменении
   // Используем useRef для отслеживания предыдущего состояния, чтобы избежать бесконечных циклов
   const prevStateRef = useRef<string>('')
+  const isSavingRef = useRef<boolean>(false)
   
   useEffect(() => {
     if (gameState) {
@@ -61,8 +64,34 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           return // Состояние не изменилось, пропускаем сохранение
         }
         
+        // Сохраняем в localStorage
         localStorage.setItem(GAME_STATE_STORAGE_KEY, stateToSave)
         prevStateRef.current = stateToSave // Сохраняем текущее состояние
+        
+        // Сохраняем в API асинхронно (не блокируем UI)
+        if (!isSavingRef.current) {
+          isSavingRef.current = true
+          fetch(`${API_BASE_URL}/api/game-state`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: stateToSave,
+          })
+            .then((res) => {
+              if (!res.ok) {
+                console.warn('[GameContext] Failed to save gameState to API:', res.statusText)
+              } else {
+                console.log('[GameContext] Saved gameState to API')
+              }
+            })
+            .catch((error) => {
+              console.warn('[GameContext] Error saving gameState to API:', error)
+            })
+            .finally(() => {
+              isSavingRef.current = false
+            })
+        }
         
         // Логируем только при значительных изменениях, чтобы не засорять консоль
         // (например, при изменении ставок или ответов)
@@ -387,6 +416,19 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     []
   )
 
+  const updateGameState = useCallback((state: GameState) => {
+    console.log('[GameContext] updateGameState called - updating from external source')
+    setGameState(state)
+    // Обновляем localStorage
+    try {
+      const stateToSave = JSON.stringify(state)
+      localStorage.setItem(GAME_STATE_STORAGE_KEY, stateToSave)
+      prevStateRef.current = stateToSave
+    } catch (error) {
+      console.error('[GameContext] Error updating localStorage:', error)
+    }
+  }, [])
+
   const resetGame = useCallback(() => {
     console.log('[GameContext] Resetting game - clearing all state and localStorage')
     setGameState(null)
@@ -402,6 +444,12 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
     keysToRemove.forEach(key => localStorage.removeItem(key))
+    // Удаляем состояние из API
+    fetch(`${API_BASE_URL}/api/game-state`, {
+      method: 'DELETE',
+    }).catch((error) => {
+      console.warn('[GameContext] Error deleting game state from API:', error)
+    })
     console.log('[GameContext] Game reset complete - all state and localStorage cleared')
   }, [])
 
@@ -410,6 +458,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       value={{
         gameState,
     setGameConfig,
+    updateGameState,
     updateTeamScore,
     markQuestionAsPlayed,
     recordQuestionAnswer,

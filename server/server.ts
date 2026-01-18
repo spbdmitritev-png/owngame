@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { questionsRouter } from './routes/questions.js'
 import { gamesRouter } from './routes/games.js'
+import { gameStateRouter } from './routes/gameState.js'
 import { pool } from './db.js'
 
 const app = express()
@@ -43,6 +44,11 @@ app.get('/', (req, res) => {
         create: 'POST /api/games',
         update: 'PUT /api/games/:id',
         delete: 'DELETE /api/games/:id'
+      },
+      gameState: {
+        get: 'GET /api/game-state',
+        save: 'POST /api/game-state',
+        delete: 'DELETE /api/game-state'
       }
     }
   })
@@ -51,6 +57,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/questions', questionsRouter)
 app.use('/api/games', gamesRouter)
+app.use('/api/game-state', gameStateRouter)
 
 // Health check
 app.get('/api/health', (req, res) => {

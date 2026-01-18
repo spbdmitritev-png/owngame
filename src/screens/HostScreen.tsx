@@ -1,12 +1,13 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
+import { API_BASE_URL } from '../config/api'
 import './HostScreen.css'
 
 export default function HostScreen() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { gameState, updateTeamScore, setFinalAnswer, setFinalBet, setFinalTeamAnswer } = useGame()
+  const { gameState, updateGameState, updateTeamScore, setFinalAnswer, setFinalBet, setFinalTeamAnswer } = useGame()
   const [phase, setPhase] = useState<'bets' | 'question' | 'results'>('bets')
   const [teams, setTeams] = useState<Array<{ id: string; name: string; shortName: string; score: number }>>([])
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({})
@@ -17,6 +18,39 @@ export default function HostScreen() {
   const [betInput, setBetInput] = useState<string>('')
   const [editingAnswerTeamId, setEditingAnswerTeamId] = useState<string | null>(null)
   const [editingAnswerText, setEditingAnswerText] = useState<string>('')
+  const syncIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Загружаем состояние из API при первом открытии HostScreen
+  useEffect(() => {
+    const loadGameStateFromAPI = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/game-state`)
+        if (response.ok) {
+          const apiState = await response.json()
+          if (apiState && apiState.teams) {
+            console.log('[HostScreen] Loaded gameState from API')
+            updateGameState(apiState)
+          }
+        }
+      } catch (error) {
+        console.warn('[HostScreen] Error loading gameState from API:', error)
+      }
+    }
+
+    // Загружаем сразу при открытии
+    loadGameStateFromAPI()
+
+    // Настраиваем периодическое обновление каждые 2 секунды
+    syncIntervalRef.current = setInterval(() => {
+      loadGameStateFromAPI()
+    }, 2000)
+
+    return () => {
+      if (syncIntervalRef.current) {
+        clearInterval(syncIntervalRef.current)
+      }
+    }
+  }, [updateGameState])
 
   // Загружаем команды из localStorage или gameState
   useEffect(() => {

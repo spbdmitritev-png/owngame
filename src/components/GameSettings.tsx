@@ -134,6 +134,16 @@ export default function GameSettings() {
               >
                 📊 Панель ведущего
               </a>
+              <div className="host-url-info">
+                <span className="host-url-label">URL для другого устройства:</span>
+                <input
+                  type="text"
+                  readOnly
+                  value={`${window.location.origin}/host`}
+                  className="host-url-input"
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                />
+              </div>
               <button className="settings-action-button" onClick={handleBackToConfig}>
                 Вернуться к настройкам
               </button>
