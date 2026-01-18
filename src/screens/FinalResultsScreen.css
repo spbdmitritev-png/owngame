@@ -1,6 +1,6 @@
 .final-results-screen {
   height: 100vh;
-  padding: 20px;
+  padding: 12px;
   background: #1a1a2e;
   overflow: hidden;
   display: flex;
@@ -10,12 +10,12 @@
 
 .final-results-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
 .final-results-header h1 {
-  font-size: 2.5em;
+  font-size: 2em;
   color: #ffd700;
   text-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
   animation: glow 2s infinite;
