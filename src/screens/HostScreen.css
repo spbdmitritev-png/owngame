@@ -74,12 +74,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px;
+  padding: 25px 40px;
   background: #16213e;
   border: 2px solid #4a9eff;
   border-radius: 15px;
   transition: all 0.3s;
   flex: 1;
+  min-width: 0;
 }
 
 .host-item:hover {
